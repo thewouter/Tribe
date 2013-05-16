@@ -1,0 +1,42 @@
+vowels:
+a a
+o o
+i i
+e e
+oi
+ai
+ie
+ia
+io
+consonants:
+q
+w
+r
+t
+p
+s
+d
+f
+g
+h
+j
+k
+l
+z
+x
+c
+v
+b
+n
+m
+tr
+kw
+pl
+kn
+dw
+sw
+sk
+kl
+sl
+cr
+vr
