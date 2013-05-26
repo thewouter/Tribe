@@ -25,15 +25,6 @@ public abstract class EntityPopup extends Popup{
 	public abstract void onLeftClick(int mouseX, int mouseY);
 	public abstract boolean isInPopup(int x, int y);
 	
-	/**
-	 * @param g
-	 * @param width width in pixels
-	 * @param height height in pixels
-	 * @param screenX
-	 * @param screenY
-	 */
-	
-	
 	protected void drawBox(SpriteBatch batch, int width, int height){
 		drawBox(batch, width, height, getScreenX(), getScreenY());
 	}
@@ -43,7 +34,7 @@ public abstract class EntityPopup extends Popup{
 	}
 	
 	protected int getScreenX(){
-		return owner.getScreenX();
+		return owner.getScreenX() ;
 	}
 	
 	protected int getScreenY(){

@@ -18,7 +18,7 @@ public class Arrow extends Projectile{
 		//int approxLifetimeInTicks = (int) ((TICKS_PER_SECOND * (distance + 1))/Math.sqrt(horSpeedX * horSpeedX + horSpeedY * horSpeedY));
 		//System.out.println("approx. lifetime: " + approxLifetimeInTicks);
 		slope = - ((double)startHeight / ((double) distance - 1));
-		System.out.println("slope arrow: " + slope + "; distance is: " + distance + " and startHeight is: " + startHeight);
+		//System.out.println("slope arrow: " + slope + "; distance is: " + distance + " and startHeight is: " + startHeight);
 		//new Exception().printStackTrace(); to open call hierachy
 	}
 

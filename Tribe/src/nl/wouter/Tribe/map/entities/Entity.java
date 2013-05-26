@@ -6,12 +6,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import nl.wouter.Tribe.InputHandler;
+import nl.wouter.Tribe.RTSComponent;
 import nl.wouter.Tribe.map.Direction;
 import nl.wouter.Tribe.map.Map;
 import nl.wouter.Tribe.map.structures.BasicStructure;
 import nl.wouter.Tribe.map.tiles.Tile;
 import nl.wouter.Tribe.multiplayer.host.MPMapHost;
 import nl.wouter.Tribe.multiplayer.host.Player;
+import nl.wouter.Tribe.rest.Oval;
 import nl.wouter.Tribe.screen.GameScreen;
 import nl.wouter.Tribe.screen.MPGameScreen;
 
@@ -26,6 +28,7 @@ public abstract class Entity implements Cloneable {
 	public int uniqueNumber;
 	public boolean isOwnedByPlayer = true;
 	public Player owner = null;
+	private Oval selectedOval;
 	
 	public static int ENTITY_ID_COUNTER = 1;
 	
@@ -38,7 +41,7 @@ public abstract class Entity implements Cloneable {
 		health = getMaxHealth();
 		uniqueNumber = ENTITY_ID_COUNTER;
 		Entity.ENTITY_ID_COUNTER = ENTITY_ID_COUNTER + 1;
-		
+		selectedOval = new Oval(getScreenX(), getScreenY(), Tile.getWidth() * RTSComponent.SCALE + getScreenX(), Tile.getHeight() * RTSComponent.SCALE + getScreenY());
 	}
 	public void setOwned(Boolean b){
 		isOwnedByPlayer = b;
@@ -54,13 +57,16 @@ public abstract class Entity implements Cloneable {
 	public abstract String getName();
 	public abstract HashMap<String, Integer> getCosts();
 	public abstract int getHeadSpace();
-	public abstract void dispose();
 	
+	public void dispose(){
+		
+	}
 	
 	public void renderSelected(SpriteBatch batch){
 		if(isOwnedByPlayer) batch.setColor(screen.getColor());
 		else batch.setColor(Color.GREEN);
-		//batch.drawOval(getScreenX(), getScreenY(), Tile.getWidth(), Tile.getHeight());
+		selectedOval.setPosition(getScreenX(), getScreenY());
+		selectedOval.render(batch);
 		render(batch);
 	}
 	

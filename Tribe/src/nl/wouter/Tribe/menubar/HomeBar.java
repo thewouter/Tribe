@@ -1,5 +1,7 @@
 package nl.wouter.Tribe.menubar;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 import nl.wouter.Tribe.Images;
 import nl.wouter.Tribe.InputHandler;
 import nl.wouter.Tribe.popups.screenpopup.ScreenPopup;
@@ -29,7 +31,7 @@ public class HomeBar extends MenuBar{
 			addButton(new Button(Images.buttons[1][1], this){
 				public void onLeftClick() {
 					MenuBarPopup popup = new MenuBarPopup((GameScreen)screen, xPosOnScreen + UITLOOP + (buttons.indexOf(this) + 1)*WIDTH_BUTTON, yPosOnScreen + UITLOOP, buttons.indexOf(this), false);
-					popup.addButton(new MenuBarPopupButton(Images.buttons[2][0].getTexture()) {
+					popup.addButton(new MenuBarPopupButton(new Sprite(Images.buttons[2][0])) {
 
 						public void onLeftClick(GameScreen screen) {
 							ScreenPopup options = new ScreenPopup(bar.screen.getWidth() / 2 - 50, bar.screen.getHeight() / 2 - 50, 85, 1, bar.screen, false);
@@ -64,7 +66,7 @@ public class HomeBar extends MenuBar{
 			addButton(new Button(Images.buttons[0][1], this){
 				public void onLeftClick() {
 					MenuBarPopup popup = new MenuBarPopup(screen, xPosOnScreen + UITLOOP + (buttons.indexOf(this) + 1)*WIDTH_BUTTON, yPosOnScreen + UITLOOP, buttons.indexOf(this), false);
-					popup.addButton(new MenuBarPopupButton(Images.buttons[1][0].getTexture()) {
+					popup.addButton(new MenuBarPopupButton(new Sprite(Images.buttons[1][0])) {
 						public void onLeftClick(GameScreen screen) {
 							ScreenPopup popup = new ScreenPopup((bar.screen.getWidth() - 100)/2, (bar.screen.getHeight() - 100)/2, 100, 100, bar.screen, false);
 							popup.addPart(new TextInput(popup, bar.input));
@@ -89,7 +91,7 @@ public class HomeBar extends MenuBar{
 						
 					});
 					
-					popup.addButton(new MenuBarPopupButton(Images.buttons[2][0].getTexture()) {
+					popup.addButton(new MenuBarPopupButton(new Sprite(Images.buttons[2][0])) {
 						public void onLeftClick(GameScreen screen) {
 							ScreenPopup popup = new ScreenPopup((screen.getWidth() - 100)/2, (screen.getHeight() - 100)/2, 100, 100, screen, false);
 							popup.addPart(new TextInput(popup, bar.input));

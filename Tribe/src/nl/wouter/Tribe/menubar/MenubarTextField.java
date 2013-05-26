@@ -23,8 +23,7 @@ public abstract class MenubarTextField extends Button{
 	public abstract String getText();
 	
 	public void render(SpriteBatch batch, int xPos, int yPos){
-		batch.setColor(Color.WHITE);
-		Screen.font.drawLine(batch, text, xPos + 1, yPos + (bar.HEIGHT_BUTTON - RTSFont.HEIGHT) / 2);
+		Screen.font.drawLine(batch, text, xPos + 1, yPos + (bar.HEIGHT_BUTTON - RTSFont.HEIGHT) / 2, Color.WHITE);
 	}
 	
 }

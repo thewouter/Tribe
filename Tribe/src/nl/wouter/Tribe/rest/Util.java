@@ -65,6 +65,23 @@ public class Util {
 		return getDistance(x1, y1, x2, y2);
 	}
 	
+	public static void drawLine(SpriteBatch batch, int x1, int y1, int x2, int y2, Color color) {
+		int x = Math.abs(x2 - x1), y =  Math.abs(y2 - y1);
+		int xMin = Math.min(x2 , x1), yMin =  Math.min(y2 , y1);
+		Pixmap map = new Pixmap(x, y, Format.RGBA8888);
+		map.setColor(color);
+		map.drawLine(x1 - xMin, y1 - yMin, x2 - xMin , y2 - yMin);
+		Texture t = new Texture(map);
+		TextureRegion r = new TextureRegion(t);
+		Sprite s = new Sprite(r);
+		s.flip(false, true);
+		s.setPosition(xMin, yMin);
+		s.draw(batch);
+		batch.flush();
+		map.dispose();
+		t.dispose();
+	}
+	
 	public static void fillRoundRect(SpriteBatch batch, int x, int y, int width, int height, int rounding, Color color){
 		Pixmap map = new Pixmap(width, height, Format.RGBA8888);
 		map.setColor(color);
@@ -543,19 +560,6 @@ public class Util {
 		default:
 			return null;
 		}
-	}
-
-	public static void drawLine(SpriteBatch batch, int x1, int y1, int x2, int y2, Color color) {
-		int x = abs(x2 - x1), y =  abs(y2 - y1);
-		Pixmap map = new Pixmap(x, y, Format.RGBA8888);
-		map.setColor(color);
-		map.drawLine(x1 - x, y1 - y, x2 - x , y2 - y);
-		Texture t = new Texture(map);
-		TextureRegion r = new TextureRegion(t);
-		r.flip(false, true);
-		Sprite s = new Sprite(t);
-		s.setPosition(x, y);
-		s.draw(batch);
 	}
 }	
 	

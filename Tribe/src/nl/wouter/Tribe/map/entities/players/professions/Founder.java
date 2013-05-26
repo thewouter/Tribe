@@ -2,12 +2,12 @@ package nl.wouter.Tribe.map.entities.players.professions;
 
 import nl.wouter.Tribe.InputHandler;
 import nl.wouter.Tribe.map.Direction;
+import nl.wouter.Tribe.map.MousePointer;
 import nl.wouter.Tribe.map.entities.Entity;
 import nl.wouter.Tribe.map.entities.players.PlayerEntity;
 import nl.wouter.Tribe.map.structures.nonnatural.BaseOfOperations;
 import nl.wouter.Tribe.popups.entitypopup.EntityOptionsPopup;
 import nl.wouter.Tribe.popups.entitypopup.Option;
-import nl.wouter.Tribe.rest.MousePointer;
 import nl.wouter.Tribe.rest.Sound;
 import nl.wouter.Tribe.screen.GameScreen;
 

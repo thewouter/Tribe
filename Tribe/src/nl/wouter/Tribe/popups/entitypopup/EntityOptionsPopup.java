@@ -16,7 +16,6 @@ public class EntityOptionsPopup extends EntityPopup {
 	private int width, height = 0;
 	int indexSelected = -1;
 	int indexHighlighted = -1;
-	int screenX = 0, screenY = 0;
 	int longestLine = 0;
 	private boolean dimensionsSet = false;
 
@@ -34,7 +33,7 @@ public class EntityOptionsPopup extends EntityPopup {
 		
 		batch.setColor(Color.BLACK);
 		
-		drawBox(batch, width, height, screenX ,screenY);
+		drawBox(batch, width, height);
 		
 		for(int i = 0; i < options.size(); i++){
 			if(i == indexSelected){
@@ -58,11 +57,9 @@ public class EntityOptionsPopup extends EntityPopup {
 
 
 	public void update(int mouseX, int mouseY){
-		screenX = owner.getScreenX() + ((GameScreen)getScreen()).getMap().translationX;
-		screenY = owner.getScreenY() + ((GameScreen)getScreen()).getMap().translationY;
 		
 		if(isInPopup(mouseX, mouseY)){
-			indexHighlighted = (mouseY  - 16 - screenY)/RTSFont.HEIGHT;
+			indexHighlighted = (mouseY  - 16 - getScreenY())/RTSFont.HEIGHT;
 		}else{
 			indexHighlighted = -1;
 		}
@@ -81,7 +78,7 @@ public class EntityOptionsPopup extends EntityPopup {
 	}
 	
 	public boolean isInPopup(int mouseX, int mouseY){
-		if(mouseX > screenX && mouseX < screenX + width && mouseY > screenY && mouseY < screenY + height){
+		if(mouseX > getScreenX() && mouseX < getScreenX() + width && mouseY > getScreenY() && mouseY < getScreenY() + height){
 			return true;
 		}
 		return false;
@@ -95,7 +92,7 @@ public class EntityOptionsPopup extends EntityPopup {
 	public void onLeftClick(int mouseX, int mouseY) {
 		//System.out.println("onLeftClick");
 		if(isInPopup(mouseX, mouseY)){
-			indexSelected = (mouseY - 16 - screenY)/RTSFont.HEIGHT;
+			indexSelected = (mouseY - 16 - getScreenY())/RTSFont.HEIGHT;
 			if(getOption(indexSelected) != null){	
 				getOption(indexSelected).onClick();
 			}

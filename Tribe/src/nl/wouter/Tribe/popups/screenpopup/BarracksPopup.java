@@ -41,8 +41,8 @@ public class BarracksPopup extends ScreenPopup {
 		xPos = title.getWidth() / 2 - (image.getWidth() / 2);
 		yPos = title.getHeight() / 2 - (image.getHeight() / 2);
 		this.owner = owner;
-		swordsMan = new Button(owner, xPos + 40, yPos + 20 * 0 + 10, 120, 501, Images.buttons[2][5].getTexture(), 1);
-		bow = new Button(owner, xPos + 40, yPos + 50, 120, 500, Images.buttons[3][5].getTexture(), 2);
+		swordsMan = new Button(owner, xPos + 40, yPos + 20 * 0 + 10, 120, 501, Images.buttons[2][5], 1);
+		bow = new Button(owner, xPos + 40, yPos + 50, 120, 500, Images.buttons[3][5], 2);
 		
 		setButtons();
 	}
@@ -139,7 +139,7 @@ public class BarracksPopup extends ScreenPopup {
 	
 	public class Button{
 		int x, y, width,height;
-		Texture button;
+		TextureRegion button;
 		public int amountToBuild;
 		//SchoolI ownerA;
 		//SchoolII ownerB;
@@ -152,13 +152,13 @@ public class BarracksPopup extends ScreenPopup {
 		
 		public final int TICKS_TO_TEACH;
 		
-		private Button(Barracks owner, int x, int y,int teachTime, int professionID, Texture image, int buttonID){
+		private Button(Barracks owner, int x, int y,int teachTime, int professionID, TextureRegion image, int buttonID){
 			this.x = x;
 			this.y = y;
 			this.professionID = professionID;
 			button = image;
-			width = button.getWidth();
-			height = button.getHeight();
+			width = button.getRegionWidth();
+			height = button.getRegionHeight();
 			amountToBuild = 0;
 			TICKS_TO_TEACH = teachTime;
 			this.buttonID = buttonID;

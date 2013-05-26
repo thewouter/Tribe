@@ -1,4 +1,4 @@
-package nl.wouter.Tribe.rest;
+package nl.wouter.Tribe.map;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,15 +7,16 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import nl.wouter.Tribe.InputHandler;
-import nl.wouter.Tribe.map.Direction;
-import nl.wouter.Tribe.map.Map;
 import nl.wouter.Tribe.map.entities.Entity;
 import nl.wouter.Tribe.map.structures.BasicStructure;
 import nl.wouter.Tribe.map.tiles.Tile;
 import nl.wouter.Tribe.multiplayer.host.MPMapHost;
+import nl.wouter.Tribe.rest.Sound;
+import nl.wouter.Tribe.rest.Util;
 import nl.wouter.Tribe.screen.GameScreen;
 
 public abstract class MousePointer {
@@ -25,12 +26,16 @@ public abstract class MousePointer {
 	public int x = 0, y = 0;
 	private Entity entity;
 	private Direction face = Direction.SOUTH_WEST;
+	private Sprite image = null;
 	
 	public MousePointer(Map map, InputHandler input, GameScreen screen){
 		this.map = map;
 		this.input = input;
 		this.screen = screen;
 		entity = toBuild(face);
+		if(entity instanceof BasicStructure){
+			image = ((BasicStructure)entity).getImage();
+		}
 	}
 	
 	public void update(){
@@ -98,6 +103,7 @@ public abstract class MousePointer {
 				screen.inventory.addMeat(- amount);
 				return true;
 			}
+			
 			return false;
 		case "vegatables":
 			if(screen.inventory.getVegetables() >= amount){
@@ -122,14 +128,22 @@ public abstract class MousePointer {
 	public abstract Entity toBuild(Direction face);
 	
 	public void render(SpriteBatch batch){
-		if(/*entity instanceof BasicStructure*/false){/*
+		if(entity instanceof BasicStructure){
 			int x = this.x - (Tile.WIDTH / 2) * (((BasicStructure)entity).getSize() - 1) - Tile.getWidth() / 2;
 			int y = this.y - ((entity.getHeadSpace() )* Tile.HEIGHT) + (Tile.HEIGHT / 2) * (((BasicStructure)entity).getSize() - 1) - Tile.getHeight() / 2;
-			int width = ((BasicStructure)entity).getImage().getWidth();
-			int height = ((BasicStructure)entity).getImage().getHeight();
+			int width = (int) image.getWidth();
+			int height = (int) image.getHeight();
 			
-			if(face == Direction.SOUTH_WEST) batch.draw(((BasicStructure)entity).getImage(), x, y);
-			else batch.draw(((BasicStructure)entity).getImage(), x + width, y, x, y + height, 0, 0, width, height);*/
+			if(face == Direction.SOUTH_WEST){
+				image.setPosition(x, y);
+				image.draw(batch);
+			}
+			else{
+				image.flip(true, false);
+				image.setPosition(x, y);
+				image.draw(batch);
+				image.flip(true, false);
+			}
 		}else{
 			batch.setColor(Color.RED);
 			Util.fillRect(batch, x, y, 5, 5,Color.RED);

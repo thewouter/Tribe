@@ -73,9 +73,7 @@ public abstract class Popup {
 				int imageX = x, imageY = y;
 				if(x > 0) imageX = 1;
 				if(y > 0) imageY = 1;
-				
 				if(imageX == 1 && imageY == 1) continue;
-				
 				gui[imageX][imageY].setPosition(screenX + x * imageWidth, screenY + y * imageHeight);
 				gui[imageX][imageY].draw(batch);
 			}
@@ -86,14 +84,12 @@ public abstract class Popup {
 			gui[imageX][imageY].setPosition(screenX + x * imageWidth, screenY + height - imageHeight);
 			gui[imageX][imageY].draw(batch);
 		}
-		for(int y = 0; y < width / imageWidth ; y++){
+		for(int y = 0; y < height / imageHeight ; y++){
 			int imageX = 2, imageY = y;
 			if(y > 0) imageY = 1;
-
 			gui[imageX][imageY].setPosition(screenX + width - imageWidth, screenY + y * imageHeight);
 			gui[imageX][imageY].draw(batch);
 		}
-		
 		gui[2][2].setPosition(screenX + width - imageWidth, screenY + height - imageHeight);
 		gui[2][2].draw(batch);
 }

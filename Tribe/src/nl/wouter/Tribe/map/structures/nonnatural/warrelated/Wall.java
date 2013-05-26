@@ -1,9 +1,9 @@
 package nl.wouter.Tribe.map.structures.nonnatural.warrelated;
 
-import java.awt.Image;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import nl.wouter.Tribe.map.Direction;
 import nl.wouter.Tribe.map.Map;
@@ -14,7 +14,7 @@ import nl.wouter.Tribe.screen.GameScreen;
 
 public abstract class Wall extends BasicStructure {
 	protected boolean[] neightboursAreConnected = {false, false, false, false};
-	protected Texture[] images = new Texture[4];
+	protected Sprite[] images = new Sprite[4];
 
 	public Wall(Map map, GameScreen screen, int ID, int xPos, int yPos, Direction front) {
 		super(map, screen, xPos, yPos, 6, 0, ID, front);
@@ -71,10 +71,6 @@ public abstract class Wall extends BasicStructure {
 	protected abstract void loadImages();
 	
 	public void update() {}
-
-	public int getMaxHealth() {
-		return 0;
-	}
 
 	public String getExtraOne() {
 		return "0";

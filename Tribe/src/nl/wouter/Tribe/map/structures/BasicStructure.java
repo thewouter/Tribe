@@ -26,8 +26,8 @@ public abstract class BasicStructure extends Structure {
 	
 	public void render(SpriteBatch batch){
 		if(getFront() != Direction.SOUTH_EAST){
-			image.setPosition(getScreenX() - (Tile.WIDTH / 2) * (getSize() - 1), getScreenY() - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
-			image.draw(batch);
+			getImage().setPosition(getScreenX() - (Tile.WIDTH / 2) * (getSize() - 1), getScreenY() - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
+			getImage().draw(batch);
 		}
 		else{
 			flippedImage.setPosition(getScreenX() - (Tile.WIDTH / 2) * (getSize() - 1), getScreenY() - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
@@ -37,7 +37,7 @@ public abstract class BasicStructure extends Structure {
 	}
 	
 	public void render(SpriteBatch batch, int x, int y){
-		batch.draw(image, x - (Tile.WIDTH / 2) * (getSize() - 1), y - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
+		batch.draw(getImage(), x - (Tile.WIDTH / 2) * (getSize() - 1), y - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
 		
 	}
 	
@@ -46,13 +46,13 @@ public abstract class BasicStructure extends Structure {
 		int y = textureY * Tile.HEIGHT;
 		int width = getSize() * Tile.WIDTH;
 		int height = (getSize() + getHeadSpace()) * Tile.HEIGHT;
-		image = new Sprite(loadImage(x, y, width, height));
-		TextureRegion r = new TextureRegion(image);
+		setImage(new Sprite(loadImage(x, y, width, height)));
+		TextureRegion r = new TextureRegion(getImage());
 		r.flip(true, false);
 		flippedImage = new Sprite(r);
 	}
 	
-	public TextureRegion getImage(){
+	public Sprite getImage(){
 		return image;
 	}
 
@@ -62,5 +62,9 @@ public abstract class BasicStructure extends Structure {
 
 	public void setFront(Direction front) {
 		this.front = front;
+	}
+
+	public void setImage(Sprite image) {
+		this.image = image;
 	}
 }

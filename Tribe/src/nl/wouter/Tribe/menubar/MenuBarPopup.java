@@ -37,7 +37,7 @@ public class MenuBarPopup extends Popup {
 			screenY = yPos;
 		}
 		
-		drawBox(batch,width	, height, screenX, screenY);
+		drawBox(batch, width, height, screenX, screenY);
 		
 		for(int i = 0; i < buttons.size(); i++){
 			int x = i % 5;

@@ -98,6 +98,7 @@ import nl.wouter.Tribe.rest.Util;
 			}
 		}
 		getMap().update( getWidth(), getHeight());
+		
 		bar.update(getWidth(), getHeight());
 		
 		statusBar.update(getWidth(), getHeight());
@@ -108,8 +109,7 @@ import nl.wouter.Tribe.rest.Util;
 			int dx = targetEntity.getScreenX() + (getMap().translationX - getWidth() / 2);
 			int dy = targetEntity.getScreenY() + (getMap().translationY - getHeight() / 2);
 			
-			getMap().translationX -= dx / 10;
-			getMap().translationY -= dy / 10;
+			getMap().translate(-dx / 10, -dy / 10);
 		
 			if(Util.abs(dx) < 10 && Util.abs(dy) < 10) targetEntity = null;
 		}
@@ -129,11 +129,7 @@ import nl.wouter.Tribe.rest.Util;
 			}
 		}
 		
-		if(entityPopup != null){
-			entityPopup.update(input.getMouseX(), input.getMouseY());
-			if(!selectedEntities.contains(entityPopup.getOwner())) entityPopup = null;
-		}
-		if(input.wasDragging() && (popup == null || !popup.isInPopup(input.mouseX, input.mouseY))){
+		if(input.wasDragging() && (popup == null || !popup.isInPopup(input.mouseX, input.mouseY) && entityPopup == null)){
 			int x1 = input.mouseXOnClick, y1 = input.mouseYOnClick, x2 = input.mouseX, y2 = input.mouseY;
 			selectedEntities.clear();
 			LinkedList<Entity> inRange = (getMap().getEntities(x1, y1 , x2, y2));
@@ -148,6 +144,11 @@ import nl.wouter.Tribe.rest.Util;
 			if(selectedEntities.size() == 0){
 				selectedEntities.addAll(structures);
 			}
+		}
+		
+		if(entityPopup != null){
+			entityPopup.update(input.getMouseX(), input.getMouseY());
+			if(!selectedEntities.contains(entityPopup.getOwner())) entityPopup = null;
 		}
 		
 		if(input.RMBTapped()){
@@ -216,14 +217,6 @@ import nl.wouter.Tribe.rest.Util;
 
 	public void removePopup(){
 		entityPopup = null;
-	}
-
-	public int getMapX(){
-		return Util.getMapX(input.getMouseX() - getMap().translationX, input.getMouseY() - getMap().translationY);
-	}
-
-	public int getMapY(){
-		return Util.getMapY(input.getMouseX() - getMap().translationX, input.getMouseY() - getMap().translationY);
 	}
 
 	public void deselectEntity(){

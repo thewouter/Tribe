@@ -2,16 +2,16 @@ package nl.wouter.Tribe.menubar;
 
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import nl.wouter.Tribe.screen.GameScreen;
 import nl.wouter.Tribe.screen.Screen;
 
 public abstract class MenuBarPopupButton {
-	Texture image;
+	Sprite image;
 	
-	public MenuBarPopupButton(Texture i){
+	public MenuBarPopupButton(Sprite i){
 		image = i;
 	}
 	
@@ -20,10 +20,11 @@ public abstract class MenuBarPopupButton {
 	public abstract String getName();
 	
 	public void render(SpriteBatch batch, int xPos, int yPos){
-		batch.draw(image,xPos,yPos);
+		image.setPosition(xPos, yPos);
+		image.draw(batch);
 	}
 	
 	public void renderHoverOver(SpriteBatch batch, int xPos, int yPos){
-		Screen.font.drawLine(batch, getName(), xPos, yPos - image.getHeight(), Color.BLACK);
+		Screen.font.drawLine(batch, getName(), xPos, (int)( yPos - image.getHeight()), Color.BLACK);
 	}
 }

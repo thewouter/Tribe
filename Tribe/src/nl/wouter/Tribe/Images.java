@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Images {
-	public static TextureRegion[][] terrain = split(load("Pictures/terrain3.png"), 16, 16);
+	public static TextureRegion[][] terrain = split(load("Pictures/terrain2.png"), 16, 16);
 	public static TextureRegion[][] gui = split(load("Pictures/gui.png"), 3, 3);
 	public static TextureRegion structures = new TextureRegion(load("Pictures/structures.png"));
 	public static TextureRegion font = new TextureRegion(load("Pictures/font.png"));
@@ -35,6 +35,8 @@ public class Images {
 				y.flip(false, true);
 			}
 		}
+		region.flip(false, true);
+		
 		TextureRegion[][] result = new TextureRegion[r[0].length][r.length];
 		
 		for(int x = 0; x < r.length; x++){

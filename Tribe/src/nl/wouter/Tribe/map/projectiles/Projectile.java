@@ -69,7 +69,6 @@ public abstract class Projectile {
 			horSpeedY *=-1;
 			horSpeedX *=-1;
 		}
-		System.out.println("horspeedX is: " + horSpeedX + " horspeedY is: " + horSpeedY);
 		
 	}
 	
@@ -91,8 +90,6 @@ public abstract class Projectile {
 		xScreen += (horSpeedX * Tile.WIDTH)/ TICKS_PER_SECOND;
 		yScreen += (horSpeedY * Tile.WIDTH)/ TICKS_PER_SECOND;
 		
-		System.out.println(xScreen + " " + yScreen);
-		
 		int x = Util.getMapX((int)xScreen,(int) yScreen);
 		int y =  Util.getMapY((int) xScreen, (int) yScreen);
 		if(/*x != xMap ||y != yMap*/true){ // if on a new Tile
@@ -104,17 +101,13 @@ public abstract class Projectile {
 			}
 			
 			if(!map.getEntities(x, y).isEmpty()){
-				System.out.println("entities in range");
 				for (Entity e:map.getEntities(x, y)){
-					System.out.println("this one: " + e);
 					if(e != owner && e.getHeadSpace() > height){
-						System.out.println("its not the owner and it is at the correct height");
 						stop();
 						if(!(owner.screen instanceof MPGameScreen)){
 							onImpact(e);
 						}
 					}else{
-						System.out.println("entity is " + e.getHeadSpace() + " heigh and arrow is at " + height);
 					}
 				}
 			}

@@ -27,7 +27,6 @@ public abstract class Structure extends Entity {
 	}
 	
 	protected TextureRegion loadImage(int x, int y, int width, int height){
-		//System.out.println(x + " " + y);
 		TextureRegion image;
 		Images.structures.flip(false, true);
 		Images.structures.setRegion(x, y, width, height);

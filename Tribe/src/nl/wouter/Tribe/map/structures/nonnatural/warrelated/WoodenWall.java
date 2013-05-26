@@ -3,6 +3,7 @@ package nl.wouter.Tribe.map.structures.nonnatural.warrelated;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import nl.wouter.Tribe.Images;
@@ -25,24 +26,29 @@ public class WoodenWall extends Wall {
 	}
 
 	protected void loadImages() {
+		Images.structures.flip(false, true);
 		for (int i = 0, k = 0; i < 2; i++){
 			for(int j = 0; j < 2; j++, k++){
 				int x = (6 + j)* Tile.WIDTH;
 				int y = (i) * Tile.HEIGHT * 2;
 				int width = getSize() * Tile.WIDTH;
 				int height = (getSize() + getHeadSpace()) * Tile.HEIGHT;
-				try{
-					images[k] = Images.split(Images.split(Images.structures, x, y)[1][1],width, height)[0][0].getTexture();;
-				}catch(NullPointerException e){
-					e.printStackTrace();
-				}
+				Images.structures.setRegion(x, y, width, height);
+				images[k] = new Sprite(Images.structures);
+				images[k].flip(false, true);
 			}
+				
 		}
+		Images.structures.setTexture(Images.structures.getTexture());
+		Images.structures.flip(false, true);
 	}
 	
 	public void render(SpriteBatch batch){
 		for(int i = 0; i < images.length; i++){
-			if(neightboursAreConnected[i]) batch.draw(images[i], getScreenX() - (Tile.WIDTH / 2) * (getSize() - 1), getScreenY() - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
+			if(neightboursAreConnected[i]){
+				images[i].setPosition(getScreenX() - (Tile.WIDTH / 2) * (getSize() - 1), getScreenY() - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
+				images[i].draw(batch);
+			}
 		}
 		
 		boolean flag = true;
@@ -51,8 +57,9 @@ public class WoodenWall extends Wall {
 		}
 		
 		if(flag){
-			for(Texture image:images){
-				batch.draw(image, getScreenX() - (Tile.WIDTH / 2) * (getSize() - 1), getScreenY() - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
+			for(Sprite image:images){
+				image.setPosition(getScreenX() - (Tile.WIDTH / 2) * (getSize() - 1), getScreenY() - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
+				image.draw(batch);
 			}
 		}
 	}
@@ -62,7 +69,7 @@ public class WoodenWall extends Wall {
 	}
 
 	public String getName() {
-		return "Wooden Wall: " + this.toString();
+		return "Wooden Wall";
 	}
 
 	public HashMap<String, Integer> getCosts() {

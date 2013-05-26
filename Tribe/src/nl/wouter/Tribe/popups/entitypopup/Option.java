@@ -21,11 +21,11 @@ public abstract class Option {
 	}
 	
 	public void render(SpriteBatch batch, int index){
-		Screen.font.drawLine(batch, name, owner.screenX + 16, owner.screenY + 16 + index * RTSFont.HEIGHT);
+		Screen.font.drawLine(batch, name, owner.getScreenX() + 16, owner.getScreenY() + 16 + index * RTSFont.HEIGHT);
 	}
 	
 	public void renderInColor(SpriteBatch batch, int index, Color c){
-		Screen.font.drawLineAndShadow(batch, name, owner.screenX + 16, owner.screenY + 16 + index * RTSFont.HEIGHT, c);
+		Screen.font.drawLineAndShadow(batch, name, owner.getScreenX() + 16, owner.getScreenY() + 16 + index * RTSFont.HEIGHT, c);
 	}
 	
 	public EntityOptionsPopup getPopup(){

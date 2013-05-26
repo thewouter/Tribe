@@ -50,6 +50,8 @@ public class SPGameScreen extends GameScreen {
 				getMap().addEntity(p);
 				selectedEntities.add(p);
 				getMap().addEntity(new IronSmelter(getMap(), this, 10, y + 10, Direction.WEST));
+				getMap().handleEntityMutations();
+				getMap().sortEntitiesForRendering();
 				break;
 			}
 		}
@@ -91,8 +93,8 @@ public class SPGameScreen extends GameScreen {
 			if(input.space.isPressed() && selectedEntities != null && !selectedEntities.isEmpty()) targetEntity = selectedEntities.getFirst();
 		
 			if(targetEntity != null){
-				int dx = targetEntity.getScreenX() + (getMap().translationX - getWidth() / 2);
-				int dy = targetEntity.getScreenY() + (getMap().translationY - getHeight() / 2);
+				int dx = targetEntity.getScreenX() - getWidth() / 2;
+				int dy = targetEntity.getScreenY() - getHeight() / 2 ;
 				
 				getMap().translate(-dx / 10, -dy / 10);
 			

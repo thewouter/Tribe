@@ -82,6 +82,7 @@ public class Map {
 		noiseObj = new PerlinNoise2D();
 		generateMap(screen);
 		this.screen = screen;
+		handleEntityMutations();
 		toSort.addAll(entities);
 	}
 	
@@ -90,15 +91,20 @@ public class Map {
 		noiseObj = new PerlinNoise2D();
 		this.amountSheepGroups = amountSheepGroups;
 		generateEmptyMap();
+		handleEntityMutations();
 		toSort.addAll(entities);
 	}
 	
-	public void sortEntitiesForRendering(int screenWidth, int screenHeight){
+	public void sortEntitiesForRendering(){
 		toSort.clear();
+		if(screen == null){
+			toSort.addAll(entities);
+			return;
+		}
 		for(Entity e: entities){
 			int x = e.getScreenX();
 			int y = e.getScreenY();
-			if(x > - 30  && y > - 30 && x < screenWidth + 30 && y < screenHeight + 30 ){
+			if(x > - 30  && y > - 30 && x < screen.getWidth() + 30 && y < screen.getHeight() + 30 ){
 				toSort.add(e);
 			}
 		}
@@ -108,7 +114,7 @@ public class Map {
 		translationX += x;
 		translationY += y;
 		if(x != 0 || y != 0){
-			sortEntitiesForRendering(screen.getWidth(), screen.getHeight());
+			sortEntitiesForRendering();
 		}
 	}
 	
@@ -348,6 +354,10 @@ public class Map {
 	}
 	
 	public void handleEntityMutations(){
+		boolean flag = false;
+		if(!toBeRemoved.isEmpty() || !toBeRemovedFromMap.isEmpty() || !toBeAdded.isEmpty() || !projectilesToAdd.isEmpty() || !projectilesToRemove.isEmpty()){
+			flag = true;
+		}
 		entities.removeAll(toBeRemoved);
 		entities.removeAll(toBeRemovedFromMap);
 		notOnMap.addAll(toBeRemovedFromMap);
@@ -363,6 +373,9 @@ public class Map {
 		projectilesToAdd.clear();
 		projectiles.removeAll(projectilesToRemove);
 		projectilesToRemove.clear();
+		if(flag){
+			sortEntitiesForRendering();
+		}
 	}
 	
 	public void addProjectile(Projectile projectile){

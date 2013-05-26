@@ -18,6 +18,7 @@ import nl.wouter.Tribe.InputHandler;
 import nl.wouter.Tribe.RTSComponent;
 import nl.wouter.Tribe.map.Direction;
 import nl.wouter.Tribe.map.Map;
+import nl.wouter.Tribe.map.MousePointer;
 import nl.wouter.Tribe.map.entities.Entity;
 import nl.wouter.Tribe.map.structures.nonnatural.SchoolI;
 import nl.wouter.Tribe.map.structures.nonnatural.SchoolII;
@@ -30,7 +31,6 @@ import nl.wouter.Tribe.popups.entitypopup.EntityPopup;
 import nl.wouter.Tribe.popups.screenpopup.ScreenPopup;
 import nl.wouter.Tribe.popups.screenpopup.ScreenPopupButton;
 import nl.wouter.Tribe.rest.Inventory;
-import nl.wouter.Tribe.rest.MousePointer;
 import nl.wouter.Tribe.rest.Util;
 import nl.wouter.Tribe.screen.Screen;
 
@@ -258,6 +258,8 @@ public abstract class GameScreen extends Screen {
 	}
 
 	public void setPointer(MousePointer pointer) {
+		
+		
 		this.pointer = pointer;
 	}
 }
