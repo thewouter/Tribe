@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 import nl.wouter.Tribe.Images;
 import nl.wouter.Tribe.InputHandler;
@@ -261,5 +262,11 @@ public abstract class GameScreen extends Screen {
 		
 		
 		this.pointer = pointer;
+	}
+	
+	public void resize(int width, int height){
+		super.resize(width, height);
+		map.screenResized();
+		map.sortEntitiesForRendering();
 	}
 }

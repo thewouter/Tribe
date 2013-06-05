@@ -34,10 +34,15 @@ public class MainMenu extends MenuScreen {
 			
 			public void onLeftClick() {
 				String username = owner.getTextInput(1).getOutput();
-				if(!owner.screen.component.isMember(username)) owner.screen.component.stop();
-				else {
+				try{
+				if(!owner.screen.component.isMember(username)) {
+					owner.screen.component.stop();
+				}else {
 					setPopup(null);
 					owner.screen.component.setLoginName(username);
+				}
+				}catch(Exception e){
+					e.printStackTrace();
 				}
 			}
 		});
@@ -77,7 +82,7 @@ public class MainMenu extends MenuScreen {
 		else if(menuButton.equals(exitGame)) component.stop();
 		else if(menuButton.equals(newSPGame)) component.setGameScreen(true);
 		else if(menuButton.equals(newMPGame)){
-			ScreenPopup popup = new ScreenPopup((getWidth() / 4 )- 50, (getHeight() / 4) - 50, 100, 100, title, false);
+			ScreenPopup popup = new ScreenPopup((getWidth() / 2 )- 50, (getHeight() / 2) - 50, 100, 100, title, false);
 			TextInput IP = new TextInput(popup, input);
 			IP.setText("localhost");
 			popup.addPart(IP);

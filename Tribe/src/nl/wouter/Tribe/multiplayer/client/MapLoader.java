@@ -9,7 +9,7 @@ import nl.wouter.Tribe.map.tiles.Tile;
 import nl.wouter.Tribe.rest.Util;
 import nl.wouter.Tribe.screen.MPGameScreen;
 
-public class MapLoader extends Thread {
+public class MapLoader{
 	
 	String mapInString;
 	MPMapClient map;
@@ -26,7 +26,8 @@ public class MapLoader extends Thread {
 	}
 	
 	public void run(){
-		ArrayList<String> mapInStrings =Util.splitString(mapInString);
+		try{
+		ArrayList<String> mapInStrings = Util.splitString(mapInString);
 		length = mapInStrings.size();
 		int mapSize = Util.parseInt(mapInStrings.get(0));
 		//System.out.println(mapSize);
@@ -57,8 +58,6 @@ public class MapLoader extends Thread {
 			}
 		}
 		int amountEntities = Util.parseInt(mapInStrings.get(counter++));
-		//System.out.println(amountEntities);
-		//System.out.println(screen);
 		for(int i = 0; i < amountEntities; i++){
 			String entity = mapInStrings.get(counter++) + " " + mapInStrings.get(counter++) + " " + mapInStrings.get(counter++) + " " + mapInStrings.get(counter++) + " ";
 			int number = Util.parseInt(mapInStrings.get(counter++));
@@ -78,7 +77,7 @@ public class MapLoader extends Thread {
 			e.printStackTrace();
 		}
 		//System.out.println(amountMovements + " \n");
-		
+		map.handleEntityMutations();
 		for (int i = 0; i < amountMovements; i++){
 			int uniqueNumber = Util.parseInt(mapInStrings.get(counter++));
 			((MovingEntity)map.getEntity(uniqueNumber)).moveToFromHost(new Point(Util.parseInt(mapInStrings.get(counter++)),Util.parseInt(mapInStrings.get(counter++))));
@@ -86,6 +85,9 @@ public class MapLoader extends Thread {
 		}
 		input.send("1 Received!");
 		screen.setIsLoaded(true);
+	}catch(Exception e){
+		e.printStackTrace();
+	}
 	}
 	
 	public int checkProgress() {

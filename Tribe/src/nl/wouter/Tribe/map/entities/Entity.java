@@ -174,4 +174,10 @@ public abstract class Entity implements Cloneable {
 		String data = this.ID + " " + this.xPos + " " + this.yPos + " " + this.getHealth() + " " + this.getExtraOne() + " " + this.uniqueNumber + " " + frontData;
 		return data;
 	}
+	
+	public void screenResized(){
+		selectedOval = new Oval(getScreenX(), getScreenY(), Tile.getWidth() * RTSComponent.SCALE + getScreenX(), Tile.getHeight() * RTSComponent.SCALE + getScreenY());
+	}
+	
+	
 }

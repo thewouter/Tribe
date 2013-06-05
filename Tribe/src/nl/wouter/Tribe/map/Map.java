@@ -37,7 +37,7 @@ public class Map {
 	private ArrayList<Projectile> projectiles = new ArrayList<>(), projectilesToAdd = new ArrayList<>(), projectilesToRemove = new ArrayList<>();
 	public PerlinNoise2D noiseObj;
 	public int amountSheepGroups = 0;
-	private GameScreen screen;
+	protected GameScreen screen;
 	int c1 = 0, c2 = 0;
 	public int translationX, translationY;
 	LinkedList<Entity> toSort = new LinkedList<Entity>();
@@ -86,10 +86,11 @@ public class Map {
 		toSort.addAll(entities);
 	}
 	
-	public Map(int mapSize, int amountSheepGroups){
+	public Map(int mapSize, int amountSheepGroups, GameScreen screen2){
 		surface = new Tile[mapSize][mapSize];
 		noiseObj = new PerlinNoise2D();
 		this.amountSheepGroups = amountSheepGroups;
+		this.screen = screen2;
 		generateEmptyMap();
 		handleEntityMutations();
 		toSort.addAll(entities);
@@ -696,6 +697,7 @@ public class Map {
 	}
 	
 	public synchronized String getData(){
+		System.out.println("getting data...");
 		String data = getLength() + " " + amountSheepGroups;
 	
 		for(int x = 0 ;x < getLength(); x++){
@@ -719,7 +721,14 @@ public class Map {
 			}
 		}
 		data = data + " " + numberOfMovements + movements;
-		
+		System.out.println("data collected");
 		return data;
+	}
+
+	public void screenResized() {
+		for(Entity e:getEntities()){
+			e.screenResized();
+		}
+		
 	}
 }

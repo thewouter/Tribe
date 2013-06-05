@@ -76,7 +76,6 @@ public class SPGameScreen extends GameScreen {
 	
 	public void update(){
 		if(!pause){
-			
 			if(getPointer() != null){
 				getPointer().update(); 
 				if(bar.showPopup == false){
@@ -139,20 +138,39 @@ public class SPGameScreen extends GameScreen {
 			}
 			
 			if(input.RMBTapped()){
+				ArrayList<MovingEntity> entitiesToMove = new ArrayList<>();
+				ArrayList<Entity> rightClicked = getMap().getEntities(getMapX(), getMapY()); //the Entity that is right clicked, if any
 				
-				Entity rightClicked = getMap().getEntity(getMapX(), getMapY()); //the Entity that is right clicked, if any
 				boolean canMove = true;
 				
-				if(rightClicked != null && !selectedEntities.isEmpty()) {
-					canMove = selectedEntities.getFirst().onRightClick(rightClicked, this, input);
+				if(!rightClicked.isEmpty() && !selectedEntities.isEmpty()) {
+					canMove = selectedEntities.getFirst().onRightClick(rightClicked.get(0), this, input);
 				}
 				
 				if(canMove){
-					if(!selectedEntities.isEmpty() && selectedEntities.getFirst() instanceof MovingEntity){
-						if(((MovingEntity)selectedEntities.getFirst()).isMovable()){
-							((MovingEntity) selectedEntities.getFirst()).moveTo(new Point(getMapX(), getMapY()));
-							entityPopup = null;
+					for(Entity e:selectedEntities){
+						if(!selectedEntities.isEmpty() && e instanceof MovingEntity){
+							if(((MovingEntity)e).isMovable()){
+								entitiesToMove.add((MovingEntity) e);
+								entityPopup = null;
+							}
 						}
+					}
+				}
+				int closestSquare;
+				for(int i = 1;;i++){
+					if(i*i >= entitiesToMove.size()){
+						closestSquare = i;
+						break;
+					}
+				}
+				int half = closestSquare / 2;
+				int entityCounter = 0;
+				int xPos = getMapX() - half;
+				int yPos = getMapY() - half;
+				for(int y = 0; y < closestSquare; y++){
+					for(int x = 0; x < closestSquare && entityCounter < entitiesToMove.size(); x++, entityCounter++){
+						entitiesToMove.get(entityCounter).moveTo(new Point(xPos + x, yPos + y));
 					}
 				}
 			}

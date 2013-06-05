@@ -24,7 +24,13 @@ public class MPMapHost extends Map implements Cloneable{
 		this.host = host;
 	}
 	
-	public synchronized void update(int translationX, int translationY, int screenWidth, int screenHeight){
+	public synchronized void update(int screenWidth, int screenHeight){
+		int x = 0, y = 0;
+		if(host.input.up.isPressed()) y += 5;
+		if(host.input.down.isPressed()) y -= 5;
+		if(host.input.left.isPressed()) x += 5;
+		if(host.input.right.isPressed()) x -= 5;
+		translate(x, y);
 		for(Entity e: getEntities()){
 			if(e.xPos + e.yPos + 2 > - ((translationY) / 8) && e.xPos + e.yPos - 1 < - ((translationY - screenHeight - 128)/ 8) && e.xPos - e.yPos - 3 < ((translationX) / 16) && e.xPos - e.yPos + 1 > ((translationX - screenWidth) / 16)) {
 				e.update();

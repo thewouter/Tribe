@@ -97,6 +97,11 @@ import nl.wouter.Tribe.rest.Util;
 				}
 			}
 		}
+		
+		for(String s: listener.getMessages()){
+			messageReceived(s);
+		}
+		
 		getMap().update( getWidth(), getHeight());
 		
 		bar.update(getWidth(), getHeight());

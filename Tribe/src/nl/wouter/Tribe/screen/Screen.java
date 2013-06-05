@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import nl.wouter.Tribe.InputHandler;
 import nl.wouter.Tribe.RTSComponent;
+import nl.wouter.Tribe.multiplayer.host.Player;
 import nl.wouter.Tribe.popups.screenpopup.ScreenPopup;
 import nl.wouter.Tribe.rest.RTSFont;
 

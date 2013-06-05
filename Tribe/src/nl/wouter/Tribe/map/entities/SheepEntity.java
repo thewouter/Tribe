@@ -42,6 +42,7 @@ public class SheepEntity extends MovingEntity {
 		for(int i = 0; i < Images.sheep.length-1; i++){
 			sheepAnimation.addScene(new Sprite(Images.sheep[i][0]));
 		}
+		stillImage = new Sprite(Images.sheep[Images.sheep.length - 1][0]);
 	}
 
 	protected double getTravelTime() {

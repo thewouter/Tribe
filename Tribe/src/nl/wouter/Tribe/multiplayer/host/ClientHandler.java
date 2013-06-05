@@ -29,12 +29,12 @@ public class ClientHandler extends Thread{
 				Socket s = serverSocket.accept();
 				entities.clear();
 				entities.addAll(host.map.getEntities());
-				host.addPlayer(new Player(host.component, null,host, new BufferedReader(new InputStreamReader(s.getInputStream())), new PrintStream(s.getOutputStream()),entities));
+				host.addPlayer(new Player(host.component, null, host, new BufferedReader(new InputStreamReader(s.getInputStream())), new PrintStream(s.getOutputStream()),entities));
 				
 			}
 			
 		} catch (IOException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
 

@@ -114,7 +114,7 @@ public class Save {
 			int height = data_in.readInt();
 				int amountSheepGroups = data_in.readInt();
 			
-			map = new Map(width, amountSheepGroups);
+			map = new Map(width, amountSheepGroups, screen);
 			
 			for(int x = 0; x < height; x++){
 				for( int y = 0; y < width; y++){
@@ -186,7 +186,7 @@ public class Save {
 
 			int amountSheepGroups = data_in.readInt();
 			
-			map = new Map(width, amountSheepGroups);
+			map = new Map(width, amountSheepGroups, null);
 			
 			for(int x = 0; x < height; x++){
 				for( int y = 0; y < width; y++){
@@ -259,7 +259,7 @@ public class Save {
 
 			int amountSheepGroups = data_in.readInt();
 			
-			map = new Map(width, amountSheepGroups);
+			map = new Map(width, amountSheepGroups, null);
 			
 			for(int x = 0; x < height; x++){
 				for( int y = 0; y < width; y++){

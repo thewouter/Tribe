@@ -3,19 +3,34 @@ package nl.wouter.Tribe.multiplayer.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 import nl.wouter.Tribe.screen.MPGameScreen;
 
 public class InputListener extends Thread{
 	public BufferedReader r;
 	public PrintStream p;
-	private MPGameScreen owner;
+	private ArrayList<String> messageBuffer;
 	
 	
 	public InputListener(MPGameScreen screen, BufferedReader r, PrintStream p){
 		this.r = r ;
 		this.p = p;
-		owner = screen;
+		messageBuffer = new ArrayList<>();
+	}
+
+
+	public synchronized ArrayList<String> getMessages(){
+		ArrayList<String> messages = new ArrayList<>();
+		for(String s:messageBuffer){
+			messages.add(s);
+		}
+		messageBuffer.clear();
+		return messages;
+	}
+	
+	private synchronized void addMessage(String message){
+		messageBuffer.add(message);
 	}
 	
 	public void run(){
@@ -27,7 +42,8 @@ public class InputListener extends Thread{
 					break;
 				}
 				//System.out.println(received);
-				owner.messageReceived(received);
+				//owner.messageReceived(received);
+				addMessage(received);
 			}
 		}catch(IOException e){
 			e.printStackTrace();

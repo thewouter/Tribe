@@ -31,8 +31,6 @@ public class MPHost extends Screen{
 	
 	public int port;
 	
-	public int translationX, translationY;
-	
 	public MPMapHost map;
 	
 	public Inventory inventory =new Inventory(this);
@@ -64,12 +62,13 @@ public class MPHost extends Screen{
 	}
 	
 	public void update(){
-		map.update(translationX, translationY,  Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		for(Player p: players){
+			for(String s: p.input.getMessages()){
+				messageReceived(s, p);
+			}
+		}
 		
-		if(input.up.isPressed()) translationY += 5;
-		if(input.down.isPressed()) translationY -= 5;
-		if(input.left.isPressed()) translationX += 5;
-		if(input.right.isPressed()) translationX -= 5;
+		map.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		super.update();
 		
@@ -81,11 +80,6 @@ public class MPHost extends Screen{
 			player.owner = p;
 			player.setProfession(new Founder(player));
 			map.addEntity(player);
-			/*Soldier s = new Soldier(map, p, 5, 5, null);
-			s.addSoldierComponent(new Bow(s));
-			DefenseTower t = new DefenseTower(map, p, 6, 6, Direction.NORTH);
-			t.setGuard(s);
-			map.addEntity(t);*/
 		}
 		toAdd.clear();
 	}
@@ -118,7 +112,7 @@ public class MPHost extends Screen{
 	}
 	
 	public void render(SpriteBatch batch, OrthographicCamera camera) {
-		map.render(batch, new Dimension(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		map.render(batch, new Dimension(getWidth(), getHeight()), getWidth(), getHeight());
 	}
 	
 	public void messageReceived(String message, Player owner) {

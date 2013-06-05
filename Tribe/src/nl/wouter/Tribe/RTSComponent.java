@@ -3,10 +3,8 @@ package nl.wouter.Tribe;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -20,8 +18,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 
-import nl.wouter.Tribe.FullScreenManager;
-import nl.wouter.Tribe.InputHandler;
 import nl.wouter.Tribe.multiplayer.host.MPHost;
 import nl.wouter.Tribe.rest.Sound;
 import nl.wouter.Tribe.screen.SPGameScreen;
@@ -29,6 +25,7 @@ import nl.wouter.Tribe.screen.TitleScreen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -52,19 +49,19 @@ public class RTSComponent extends Game {
 	public boolean backgroundSoundOn = false;
 	private String loginName = "Player";
 	private float updateTimer = 0f;
+	private DisplayMode[] modes;
 	
 	public void create() {
 		input = InputHandler.getInputHandler();
 		Gdx.input.setInputProcessor(input);
 		loadBackgroundMusic();
 		setTitleScreen();
-		
+		setModes(Gdx.graphics.getDisplayModes());
+		fullScreenManager = new FullScreenManager(this);
 	}
 
 	public void dispose() {
 		super.dispose();
-		//batch.dispose();
-		//texture.dispose();
 	}
 
 	public void render() {
@@ -77,6 +74,10 @@ public class RTSComponent extends Game {
 	}
 
 	private void update() {
+		if(input.fullScreen.isTapped()) {
+			System.out.println("full");
+			fullScreenManager.switchFullScreen();
+		}
 		((nl.wouter.Tribe.screen.Screen)getScreen()).update();
 		input.update();
 	}
@@ -94,7 +95,7 @@ public class RTSComponent extends Game {
 	}
 	
 	public void stop(){
-		running = false;
+		Gdx.app.exit();
 		//Options.window_width = container.getSize().width;
 		//Options.window_height = container.getSize().height;
 		//Options.startFullScreen = fullScreenManager.isFullScreen();
@@ -117,13 +118,11 @@ public class RTSComponent extends Game {
 	}
 	
 	public void setGameScreen(boolean newScreen){
-		System.out.println(newScreen);
 		if(gameScreen == null || newScreen == true) {
 			gameScreen = null;
 			gameScreen = new SPGameScreen(this, input);
 		}
 		setScreen(gameScreen);
-		
 		if(backgroundSoundOn) backgroundSound.loop();
 	}
 	
@@ -191,14 +190,14 @@ public class RTSComponent extends Game {
 			BufferedReader in = new BufferedReader(input);
 			String inputLine;
 			while((inputLine = in.readLine())!= null){
-				if(name.equals(inputLine)) return true;
+				if(name.equals(inputLine)){
+					System.out.println(inputLine);
+					return true;
+				}
 				//System.out.println(inputLine);
 			}
-		} catch (FileNotFoundException e) {
-			return true;
-		} catch (MalformedURLException e) {
-			return true;
-		} catch (IOException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			return true;
 		}
 		return false;
@@ -210,5 +209,13 @@ public class RTSComponent extends Game {
 
 	public void setLoginName(String loginName) {
 		this.loginName = loginName;
+	}
+
+	public DisplayMode[] getModes() {
+		return modes;
+	}
+
+	public void setModes(DisplayMode[] modes) {
+		this.modes = modes;
 	}
 }

@@ -12,7 +12,7 @@ public abstract class Structure extends Entity {
 	
 	public Structure(Map map, GameScreen screen ,int xPos, int yPos, int ID){
 		super(map,xPos, yPos, ID, screen);
-		//checkfor nearby walls to connect if needed.
+		//check for nearby walls to connect if needed.
 		if(connectsToWall() && !(this instanceof Wall)){
 			for(int x = -1; x <= getSize(); x++){
 				for(int y = -1; y <= getSize(); y++){
@@ -26,15 +26,19 @@ public abstract class Structure extends Entity {
 		
 	}
 	
-	protected TextureRegion loadImage(int x, int y, int width, int height){
+	protected TextureRegion loadImage(int x, int y, int width, int height, TextureRegion region){
 		TextureRegion image;
-		Images.structures.flip(false, true);
-		Images.structures.setRegion(x, y, width, height);
-		image = new TextureRegion(Images.structures);
-		Images.structures = new TextureRegion(Images.structures.getTexture());
-		Images.structures.flip(false, true);
+		region.flip(false, true);
+		region.setRegion(x, y, width, height);
+		image = new TextureRegion(region);
+		region = new TextureRegion(region.getTexture());
+		region.flip(false, true);
 		image.flip(false, true);
 		return image;
+	}
+	
+	protected TextureRegion loadImage(int x, int y, int width, int height){
+		return loadImage(x, y, width, height, Images.structures);
 	}
 	
 	public abstract int getSize();

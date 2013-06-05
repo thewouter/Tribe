@@ -24,11 +24,11 @@ public class MPMapClient extends Map{
 	
 	
 	public MPMapClient(String map, InputListener input, MPGameScreen screen) {
-		super(Integer.parseInt(Util.splitString(map).get(0)), Util.parseInt(Util.splitString(map).get(1)));
+		super(Integer.parseInt(Util.splitString(map).get(0)), Util.parseInt(Util.splitString(map).get(1)), screen);
 		this.screen = screen;
 		
 		loader = new MapLoader(map, this, input, screen);
-		loader.start();
+		loader.run();
 		grass2 = Images.terrain[0][0].getTexture();
 		grass = Images.terrain[1][0].getTexture();
 		

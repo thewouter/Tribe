@@ -36,7 +36,7 @@ public abstract class MineStructure extends Structure {
 		}else{
 			textureY = 4;
 		}
-		loadImage(textureX, textureY, Images.mines.getTexture());
+		loadImage(textureX, textureY);
 		health = getMaxHealth();
 		
 	}
@@ -54,7 +54,7 @@ public abstract class MineStructure extends Structure {
 		}else{
 			textureY = 4;
 		}
-		loadImage(textureX, textureY, Images.mines.getTexture());
+		loadImage(textureX, textureY);
 		health = getMaxHealth();
 		
 		this.health = health;
@@ -69,14 +69,14 @@ public abstract class MineStructure extends Structure {
 		Screen.font.drawLine(batch, "" + uniqueNumber, getScreenX(), getScreenY());
 	}
 	
-	public void loadImage(int textureX, int textureY, Texture i){
+	public void loadImage(int textureX, int textureY){
 		int x = textureX * Tile.WIDTH;
 		int y = textureY * Tile.HEIGHT;
 		
 		int width = getSize() * Tile.WIDTH;
 		int height = getSize() * Tile.HEIGHT;
 		
-		image = new Sprite(loadImage(x, y, width, height));
+		image = new Sprite(loadImage(x, y, width, height, Images.mines));
 		
 	}
 
@@ -97,7 +97,7 @@ public abstract class MineStructure extends Structure {
 		}else{
 			textureY = 4;
 		}
-		loadImage(textureX, textureY, Images.mines.getTexture());
+		loadImage(textureX, textureY);
 	}
 	
 	public String getExtraOne(){
