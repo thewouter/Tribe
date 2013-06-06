@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 
+import org.tritonus.share.sampled.mixer.TSoftClip;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -96,7 +98,7 @@ public class Map {
 		toSort.addAll(entities);
 	}
 	
-	public void sortEntitiesForRendering(){
+	public void sortEntitiesForRendering(){/*
 		toSort.clear();
 		if(screen == null){
 			toSort.addAll(entities);
@@ -108,7 +110,7 @@ public class Map {
 			if(x > - 30  && y > - 30 && x < screen.getWidth() + 30 && y < screen.getHeight() + 30 ){
 				toSort.add(e);
 			}
-		}
+		}*/
 	}
 	
 	public void translate(int x, int y){
@@ -304,7 +306,7 @@ public class Map {
 		
 		Collections.sort(toSort, spriteSorter);
 		
-		for(Entity e: toSort){
+		for(Entity e: getEntities()){
 			e.render(batch);
 		}
 		for(Projectile a:projectiles){
@@ -359,6 +361,9 @@ public class Map {
 		if(!toBeRemoved.isEmpty() || !toBeRemovedFromMap.isEmpty() || !toBeAdded.isEmpty() || !projectilesToAdd.isEmpty() || !projectilesToRemove.isEmpty()){
 			flag = true;
 		}
+		toSort.addAll(toBeAdded);
+		toSort.removeAll(toBeRemoved);
+		toSort.removeAll(toBeRemovedFromMap);
 		entities.removeAll(toBeRemoved);
 		entities.removeAll(toBeRemovedFromMap);
 		notOnMap.addAll(toBeRemovedFromMap);
@@ -375,7 +380,7 @@ public class Map {
 		projectiles.removeAll(projectilesToRemove);
 		projectilesToRemove.clear();
 		if(flag){
-			sortEntitiesForRendering();
+			Collections.sort(entities, spriteSorter);
 		}
 	}
 	

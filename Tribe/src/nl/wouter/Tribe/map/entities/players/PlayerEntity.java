@@ -122,7 +122,7 @@ public class PlayerEntity extends MovingEntity {
 	}
 	
 	public boolean onRightClick(Entity entityClicked, GameScreen screen, InputHandler input){
-		if(profession != null && (entityClicked == this) && profession.onRightClick(entityClicked, screen, input)) return true;
+		if(profession != null && (entityClicked == this) && profession.onRightClick(entityClicked, screen, input)) return false;
 		if(entityClicked == this){
 			EntityOptionsPopup popup = new EntityOptionsPopup(this, screen);
 			      

@@ -1,0 +1,87 @@
+0-99		Tiles
+	0 	Grass2
+	1 	Grass1
+	2 	Water
+	16	Sand
+
+100-199		MovingEntities	Cost/Tick	gold	wood	meat		Vegetables		stone
+	100	SnakeEntity						0		0		0			0				0
+	101	SheepEntity						0		0		0			0				0
+	102	PlayerEntity					0		0		1/500		1/500			0
+	103	DeerEntity						0		0		0			0				0
+		HunterEntity					1/500	0		1/500		1/500			0
+		MinerEntity						1/400	1/300	1/400		1/600			0
+		LumberJacker					1/500	0		1/400		1/600			0
+	107 Soldier							1/300	0		1/300		0				0
+	
+200-299		Structures			costs:	gold	wood	meat		vegetables		stone
+	200	CampFireStructure				0		0		0				0			0
+	201	TentStructure					5		0		0				0			0
+	202 TreeStructure					1		0		0				0			0
+	203	BaseOfOperations				100		30		0				0			50
+	206 StoneMine						5		12		0				0			0
+	209 Farm							10		10		0				0			0
+	211 Barracks						5		20		1/300 Ticks		1/300 Ticks	0
+	212 StoneDefenseTower				20		5		0				0			25
+	213 WoodenWall						1		1		0				0			0
+	214 WoodenGate						5		20		0				0			0
+	215 IronSmelter						15		2		0				0			10
+	216 WoodenDefenseTower				15		25		0				0			0
+	
+300-399 mines
+	300 GoldMine
+	301 IronMine
+	
+400-499 Professions
+	400 LumberJacker
+	401 MinerI
+	402 Hunter
+	403 Founder
+	404 Farmer
+	405 MinerII
+	406 MinerIII
+
+600-99 SoldierComponents:
+	n0 AlertComponent
+	631 Shield
+		Weapon
+		632 Sword
+		633 Bow
+	
+	
+	MP messages:
+	 starting with:
+	 	1:		message
+	 	2: 		entity movement
+	 	3:		entity added TO HOST
+	 	4:		entity added TO CLIENT
+	 	5:		entity removed
+	 	6:		entity damaged
+	 	7:		Profession added
+	 	8:		Method Profession		8 - Un - 
+	 											 1 : start Hunting
+	 											 2 : stop Hunting
+	 											 3 : start Mining
+	 											 4 : stop Mining
+	 											 5 : start Chopping
+	 											 6 : stop Chopping
+	 	9:		Shoot Arrow				9 - Un<Start> - startFromTop < 0 / 1 > - Un<End>
+		10: 	barracksButton pressed
+	
+	
+	ctrl - shift - o imports;
+	
+Start Conditions:
+
+	Normal:
+		500 Gold
+		70 	Wood
+		10 	Meat
+		10	Vegetables
+		50 	Stone
+		
+ButtonID's:
+	1: swordsMan
+	2: bow 
+		
+	

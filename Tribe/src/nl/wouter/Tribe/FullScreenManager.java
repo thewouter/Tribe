@@ -6,6 +6,7 @@ import com.badlogic.gdx.Graphics.DisplayMode;
 public class FullScreenManager {
 	private RTSComponent component;
 	private boolean fullscreen = false;
+	private int lastWidth, lastHeight;
 	
 	public FullScreenManager(RTSComponent component){
 		this.component = component;
@@ -20,14 +21,17 @@ public class FullScreenManager {
 				largest = d;
 			}
 		}
-		fullscreen = Gdx.graphics.setDisplayMode(largest);
+		fullscreen = true;
+		lastWidth = Gdx.graphics.getWidth();
+		lastHeight = Gdx.graphics.getHeight();
+		Gdx.graphics.setDisplayMode(largest.width, largest.height, true);
 	}
 	
 	public void update(){
 	}
 	
 	public void restoreScreen(){
-		Gdx.graphics.setDisplayMode(600, 600, false);
+		Gdx.graphics.setDisplayMode(lastWidth, lastHeight, false);
 		fullscreen = false;
 	}
 	

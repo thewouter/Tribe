@@ -25,10 +25,13 @@ public abstract class DefenseTower extends BasicStructure {
 	protected Entity target = null;
 	protected int counter = 0, checkCounter = 0;
 	private Oval rangeOval;
+	private int textureX, textureY;
 
 	public DefenseTower(Map map, GameScreen screen, int xPos, int yPos, int textureX, int textureY, int ID, Direction front) {
 		super(map, screen, xPos, yPos, textureX, textureY, ID, front);
 		calculateRangeOval();
+		this.textureX = textureX;
+		this.textureY = textureY;
 	}
 
 	public String getExtraOne(){
@@ -50,7 +53,7 @@ public abstract class DefenseTower extends BasicStructure {
 			guard = (Soldier)entity;
 			map.removeEntityFromMap(guard);
 			setHitRange(guard.getWeapon().MIN_HIT_RANGE);
-			loadImage(5, 0);
+			loadImage(textureX + 1, textureY);
 		}else{
 			System.out.println("this isn't a Soldier with a bow!");
 		}
@@ -61,7 +64,6 @@ public abstract class DefenseTower extends BasicStructure {
 	}
 	
 	public void renderSelected(SpriteBatch batch){
-		int radius = getHitRange() - 1;
 		rangeOval.setPosition(getScreenX() - getHitRange() * Tile.WIDTH / RTSComponent.SCALE, getScreenY() - getHitRange() * Tile.HEIGHT / RTSComponent.SCALE);
 		rangeOval.render(batch);
 		super.renderSelected(batch);
@@ -73,10 +75,7 @@ public abstract class DefenseTower extends BasicStructure {
 				for(int y = -1; y <= 1; y++){
 					Entity e = map.getEntity(x + xPos, y + yPos);
 					if(e != null && e instanceof Soldier && ((Soldier)e).getWeapon() instanceof Bow  && ((MovingEntity)e).entityGoal == this){
-						guard = (Soldier)e;
-						map.removeEntityFromMap(guard);
-						setHitRange(guard.getWeapon().MIN_HIT_RANGE);
-						loadImage(5, 0);
+						setGuard(e);
 					}
 				}
 			}

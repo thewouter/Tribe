@@ -44,6 +44,7 @@ import nl.wouter.Tribe.map.structures.nonnatural.SchoolI;
 import nl.wouter.Tribe.map.structures.nonnatural.Tent;
 import nl.wouter.Tribe.map.structures.nonnatural.warrelated.Barracks;
 import nl.wouter.Tribe.map.structures.nonnatural.warrelated.StoneDefenseTower;
+import nl.wouter.Tribe.map.structures.nonnatural.warrelated.WoodenDefenseTower;
 import nl.wouter.Tribe.map.structures.nonnatural.warrelated.WoodenGate;
 import nl.wouter.Tribe.map.structures.nonnatural.warrelated.WoodenWall;
 import nl.wouter.Tribe.map.tiles.Tile;
@@ -333,6 +334,18 @@ public class Util {
 		case 215:
 			e = new IronSmelter(map, screen,  xPos, yPos, Direction.SOUTH_WEST);
 			break;
+		case 216:
+			e = new WoodenDefenseTower(map, screen, xPos, yPos, Direction.SOUTH_WEST);
+			if(extraInfoOne.length > 2){
+				int[] extraInfoSoldier = new int[extraInfoOne.length - 5];
+				for(int i = 5; i < extraInfoOne.length; i++){
+					extraInfoSoldier[i - 5] = extraInfoOne[i];
+				}
+				Entity en = getEntity(map, screen, extraInfoOne[1], extraInfoOne[2], extraInfoOne[3], extraInfoOne[4], extraInfoSoldier, extraInfoOne[5], extraInfoOne[6]);
+				System.out.println(en);
+				((StoneDefenseTower)e).setGuard(en);
+			}
+			break;
 		case 100:
 			e = new SnakeEntity(map, screen,  xPos, yPos);
 			break;
@@ -418,6 +431,18 @@ public class Util {
 			break;
 		case 215:
 			e = new IronSmelter(map, screen,  xPos, yPos, health, Direction.SOUTH_WEST);
+			break;
+		case 216:
+			e = new WoodenDefenseTower(map, screen, xPos, yPos, health, Direction.SOUTH_WEST);
+			if(extraInfoOne.length > 2){
+				int[] extraInfoSoldier = new int[extraInfoOne.length - 5];
+				for(int i = 5; i < extraInfoOne.length; i++){
+					extraInfoSoldier[i - 5] = extraInfoOne[i];
+				}
+				Entity en = getEntity(map, screen, extraInfoOne[1], extraInfoOne[2], extraInfoOne[3], extraInfoOne[4], extraInfoSoldier, extraInfoOne[5], extraInfoOne[6]);
+				System.out.println(en);
+				((StoneDefenseTower)e).setGuard(en);
+			}
 			break;
 		case 100:
 			e = new SnakeEntity(map, screen,  xPos, yPos, health);

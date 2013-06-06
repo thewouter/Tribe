@@ -56,6 +56,11 @@ public abstract class MenuBarPopupBuildButton extends MenuBarPopupButton{
 			return "Tree";
 		}
 	};
+	public static MenuBarPopupBuildButton WoodenTower = new MenuBarPopupBuildButton(new Sprite(Images.buttons[7][5]), 216, new int[]{0}) {
+		public String getName() {
+			return "Wooden tower";
+		}
+	};
 	public static MenuBarPopupBuildButton Remove = new MenuBarPopupBuildButton(new Sprite(Images.buttons[0][7]), 0, new int[]{0}) {
 		public void onLeftClick(GameScreen screen){
 			screen.setPointer(new MousePointer(screen.getMap(), screen.input, screen) {

@@ -203,6 +203,7 @@ public abstract class GameScreen extends Screen {
 			bar.buildmenu.addButton(MenuBarPopupBuildButton.StoneDefenseTower);
 			bar.buildmenu.addButton(MenuBarPopupBuildButton.WoodenWall);
 			bar.buildmenu.addButton(MenuBarPopupBuildButton.WoodenGate);
+			bar.buildmenu.addButton(MenuBarPopupBuildButton.WoodenTower);
 			setPointer(null);
 			for(Entity e:getMap().getEntities()){
 				if(e instanceof SchoolI){
