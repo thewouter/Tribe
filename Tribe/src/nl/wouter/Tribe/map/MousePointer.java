@@ -131,8 +131,6 @@ public abstract class MousePointer {
 		if(entity instanceof BasicStructure){
 			int x = this.x - (Tile.WIDTH / 2) * (((BasicStructure)entity).getSize() - 1) - Tile.getWidth() / 2;
 			int y = this.y - ((entity.getHeadSpace() )* Tile.HEIGHT) + (Tile.HEIGHT / 2) * (((BasicStructure)entity).getSize() - 1) - Tile.getHeight() / 2;
-			int width = (int) image.getWidth();
-			int height = (int) image.getHeight();
 			
 			if(face == Direction.SOUTH_WEST){
 				image.setPosition(x, y);

@@ -61,6 +61,16 @@ public abstract class MenuBarPopupBuildButton extends MenuBarPopupButton{
 			return "Wooden tower";
 		}
 	};
+	public static MenuBarPopupBuildButton StoneWall = new MenuBarPopupBuildButton(new Sprite(Images.buttons[1][7]), 217, new int[]{0}) {
+		public String getName() {
+			return "Stone wall";
+		}
+	};
+	public static MenuBarPopupBuildButton StoneGate = new MenuBarPopupBuildButton(new Sprite(Images.buttons[1][6]), 218, new int[]{0}) {
+		public String getName() {
+			return "StoneGate";
+		}
+	};
 	public static MenuBarPopupBuildButton Remove = new MenuBarPopupBuildButton(new Sprite(Images.buttons[0][7]), 0, new int[]{0}) {
 		public void onLeftClick(GameScreen screen){
 			screen.setPointer(new MousePointer(screen.getMap(), screen.input, screen) {

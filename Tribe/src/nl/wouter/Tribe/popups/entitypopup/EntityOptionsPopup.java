@@ -41,6 +41,7 @@ public class EntityOptionsPopup extends EntityPopup {
 			}else if(i == indexHighlighted){
 				options.get(i).renderInColor(batch, i, Color.RED);
 			}else{
+				batch.setColor(Color.BLACK);
 				options.get(i).render(batch, i);
 			}
 		}
@@ -52,7 +53,7 @@ public class EntityOptionsPopup extends EntityPopup {
 			if(lineWidth > width) width = lineWidth;
 		}
 		
-		height = RTSFont.HEIGHT * (options.size())+EMPTY_SPACE;
+		height = (int) (RTSFont.HEIGHT * (options.size())+EMPTY_SPACE);
 	}
 
 

@@ -33,7 +33,6 @@ public abstract class BasicStructure extends Structure {
 			flippedImage.setPosition(getScreenX() - (Tile.WIDTH / 2) * (getSize() - 1), getScreenY() - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
 			flippedImage.draw(batch);
 		}
-		//Screen.font.drawLine(batch, uniqueNumber + "", getScreenX() + 10, getScreenY());
 	}
 	
 	public void render(SpriteBatch batch, int x, int y){

@@ -44,6 +44,8 @@ import nl.wouter.Tribe.map.structures.nonnatural.SchoolI;
 import nl.wouter.Tribe.map.structures.nonnatural.Tent;
 import nl.wouter.Tribe.map.structures.nonnatural.warrelated.Barracks;
 import nl.wouter.Tribe.map.structures.nonnatural.warrelated.StoneDefenseTower;
+import nl.wouter.Tribe.map.structures.nonnatural.warrelated.StoneGate;
+import nl.wouter.Tribe.map.structures.nonnatural.warrelated.StoneWall;
 import nl.wouter.Tribe.map.structures.nonnatural.warrelated.WoodenDefenseTower;
 import nl.wouter.Tribe.map.structures.nonnatural.warrelated.WoodenGate;
 import nl.wouter.Tribe.map.structures.nonnatural.warrelated.WoodenWall;
@@ -346,6 +348,12 @@ public class Util {
 				((StoneDefenseTower)e).setGuard(en);
 			}
 			break;
+		case 217:
+			e = new StoneWall(map, screen, xPos, yPos, Direction.SOUTH_WEST);
+			break;
+		case 218:
+			e = new StoneGate(map, screen, xPos, yPos, Direction.SOUTH_WEST);
+			break;
 		case 100:
 			e = new SnakeEntity(map, screen,  xPos, yPos);
 			break;
@@ -443,6 +451,12 @@ public class Util {
 				System.out.println(en);
 				((StoneDefenseTower)e).setGuard(en);
 			}
+			break;
+		case 217:
+			e = new StoneWall(map, screen, xPos, yPos, health, Direction.SOUTH_WEST);
+			break;
+		case 218:
+			e = new StoneGate(map, screen, xPos, yPos, health, Direction.SOUTH_WEST);
 			break;
 		case 100:
 			e = new SnakeEntity(map, screen,  xPos, yPos, health);

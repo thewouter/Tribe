@@ -23,7 +23,7 @@ import nl.wouter.Tribe.screen.GameScreen;
 import nl.wouter.Tribe.screen.MPGameScreen;
 
 public abstract class MovingEntity extends Entity {
-	protected double timeTraveled; //hoelang hij onderweg is
+	protected double timeTraveled;
 	private Entity goal = null;
 	public Entity entityGoal = null;
 	private Point entPoint = new Point(0,0), targetPoint = new Point (0,0);
@@ -101,6 +101,7 @@ public abstract class MovingEntity extends Entity {
 			
 			if(!nextDirections.isEmpty()) nextDirections.remove(0);
 			nextDirection = null;
+			map.entityMoved(this);
 		}
 	}
 	

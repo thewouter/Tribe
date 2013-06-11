@@ -18,54 +18,16 @@ public class WoodenWall extends Wall {
 
 
 	public WoodenWall(Map map, GameScreen screen, int xPos, int yPos, Direction front) {
-		super(map, screen, ID, xPos, yPos, front);
+		super(map, screen, ID, xPos, yPos, 6, 0, front);
 	}
 	
 	public WoodenWall(Map map, GameScreen screen, int xPos, int yPos, int health, Direction front) {
-		super(map, screen, ID, xPos, yPos, health, front);
+		super(map, screen, ID, xPos, yPos, 6, 0, health, front);
 	}
 
-	protected void loadImages() {
-		Images.structures.flip(false, true);
-		for (int i = 0, k = 0; i < 2; i++){
-			for(int j = 0; j < 2; j++, k++){
-				int x = (6 + j)* Tile.WIDTH;
-				int y = (i) * Tile.HEIGHT * 2;
-				int width = getSize() * Tile.WIDTH;
-				int height = (getSize() + getHeadSpace()) * Tile.HEIGHT;
-				Images.structures.setRegion(x, y, width, height);
-				images[k] = new Sprite(Images.structures);
-				images[k].flip(false, true);
-			}
-				
-		}
-		Images.structures.setTexture(Images.structures.getTexture());
-		Images.structures.flip(false, true);
-	}
-	
-	public void render(SpriteBatch batch){
-		for(int i = 0; i < images.length; i++){
-			if(neightboursAreConnected[i]){
-				images[i].setPosition(getScreenX() - (Tile.WIDTH / 2) * (getSize() - 1), getScreenY() - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
-				images[i].draw(batch);
-			}
-		}
-		
-		boolean flag = true;
-		for(boolean b:neightboursAreConnected){
-			if(b) flag = false;
-		}
-		
-		if(flag){
-			for(Sprite image:images){
-				image.setPosition(getScreenX() - (Tile.WIDTH / 2) * (getSize() - 1), getScreenY() - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
-				image.draw(batch);
-			}
-		}
-	}
 
 	public int getMaxHealth() {
-		return 200;
+		return 100;
 	}
 
 	public String getName() {

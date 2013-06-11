@@ -49,7 +49,7 @@ public class MPMapHost extends Map implements Cloneable{
 		for(Projectile p: getProjectiles()){
 			p.update();
 		}
-		handleEntityMutations();
+		handleEntityMutations(true);
 	}
 	
 	public void render(SpriteBatch batch){

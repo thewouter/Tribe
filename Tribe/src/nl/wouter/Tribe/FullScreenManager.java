@@ -24,6 +24,7 @@ public class FullScreenManager {
 		fullscreen = true;
 		lastWidth = Gdx.graphics.getWidth();
 		lastHeight = Gdx.graphics.getHeight();
+		Gdx.graphics.setDisplayMode(largest.width, largest.height, false);
 		Gdx.graphics.setDisplayMode(largest.width, largest.height, true);
 	}
 	

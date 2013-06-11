@@ -77,7 +77,7 @@ public class MapLoader{
 			e.printStackTrace();
 		}
 		//System.out.println(amountMovements + " \n");
-		map.handleEntityMutations();
+		map.handleEntityMutations(false);
 		for (int i = 0; i < amountMovements; i++){
 			int uniqueNumber = Util.parseInt(mapInStrings.get(counter++));
 			((MovingEntity)map.getEntity(uniqueNumber)).moveToFromHost(new Point(Util.parseInt(mapInStrings.get(counter++)),Util.parseInt(mapInStrings.get(counter++))));
@@ -85,6 +85,7 @@ public class MapLoader{
 		}
 		input.send("1 Received!");
 		screen.setIsLoaded(true);
+		map.handleEntityMutations(true);
 	}catch(Exception e){
 		e.printStackTrace();
 	}

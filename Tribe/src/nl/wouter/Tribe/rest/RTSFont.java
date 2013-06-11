@@ -12,14 +12,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class RTSFont {
-	public static final int HEIGHT = 10;
+	public static final int HEIGHT = 12;
 	public static final String FONT_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;,{}\"´`'<>";
 	FreeTypeFontGenerator generator;
 	BitmapFont font ;
+	private String fileName = "alterebro-pixel-font.ttf";
 	
 	public RTSFont(){
-		generator= new FreeTypeFontGenerator(Gdx.files.internal("data/AdvoCut.ttf"));
-		font = generator.generateFont(HEIGHT, FONT_CHARACTERS, true);
+		generator= new FreeTypeFontGenerator(Gdx.files.internal("data/" + fileName));
+		font = generator.generateFont(HEIGHT + 4, FONT_CHARACTERS, true);
 		generator.dispose();
 	}
 	

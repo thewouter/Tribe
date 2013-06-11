@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 
-import org.tritonus.share.sampled.mixer.TSoftClip;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -33,7 +31,7 @@ import nl.wouter.Tribe.screen.MPGameScreen;
 
 public class Map {
 	public Tile[][] surface;
-	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private ArrayList<Entity> entities = new ArrayList<Entity>(), renderList = new ArrayList<>();
 	public ArrayList<Entity> notOnMap = new ArrayList<Entity>();
 	public LinkedList<Entity> toBeRemoved = new LinkedList<Entity>(), toBeAdded = new LinkedList<Entity>(), toBeRemovedFromMap = new LinkedList<Entity>();
 	private ArrayList<Projectile> projectiles = new ArrayList<>(), projectilesToAdd = new ArrayList<>(), projectilesToRemove = new ArrayList<>();
@@ -42,7 +40,8 @@ public class Map {
 	protected GameScreen screen;
 	int c1 = 0, c2 = 0;
 	public int translationX, translationY;
-	LinkedList<Entity> toSort = new LinkedList<Entity>();
+	
+	private static boolean ISLAND = true;
 	
 	public static final int TREE_GROW_CHANGE = 15, SHEEP_SPAWN_CHANGE_IN_FOREST =2, 
 			SHEEP_SPAWN_CHANGE_ON_PLAINS = 5, RADIUS_SHEEP_GROUPS = 5, SIZE_SHEEP_GROUPS = 10, 
@@ -53,20 +52,6 @@ public class Map {
 	 *  
 	 * change to spawn a tree is TREE_GROW_CHANGE^-1
 	 */
-	
-	private static final Comparator<Entity> spriteSorter = new Comparator<Entity>() {
-		public int compare(Entity e0, Entity e1){
-			int y0 = e0.getxPos() + e0.getyPos(); //aprox. screen y coordinate of e0
-			int y1 = e1.getxPos() + e1.getyPos(); //aprox. screen y coordinate of e1
-
-			if(y1 < y0)
-				return +1;
-			if(y1 > y0)
-				return -1;
-			return 0;
-		}
-	};
-	
 	private static final Comparator<Entity> entitySorter = new Comparator<Entity>(){
 
 		public int compare(Entity arg0, Entity arg1) {
@@ -79,13 +64,10 @@ public class Map {
 	};
 	
 	public Map(int mapSize, GameScreen screen){
-		
 		surface = new Tile[mapSize][mapSize];
 		noiseObj = new PerlinNoise2D();
 		generateMap(screen);
 		this.screen = screen;
-		handleEntityMutations();
-		toSort.addAll(entities);
 	}
 	
 	public Map(int mapSize, int amountSheepGroups, GameScreen screen2){
@@ -94,23 +76,20 @@ public class Map {
 		this.amountSheepGroups = amountSheepGroups;
 		this.screen = screen2;
 		generateEmptyMap();
-		handleEntityMutations();
-		toSort.addAll(entities);
 	}
 	
-	public void sortEntitiesForRendering(){/*
-		toSort.clear();
+	public void sortEntitiesForRendering(){
 		if(screen == null){
-			toSort.addAll(entities);
+			renderList.addAll(entities);
 			return;
 		}
 		for(Entity e: entities){
-			int x = e.getScreenX();
-			int y = e.getScreenY();
-			if(x > - 30  && y > - 30 && x < screen.getWidth() + 30 && y < screen.getHeight() + 30 ){
-				toSort.add(e);
+			if(entityInScreen(e)){
+				addToRenderList(e);
+			}else if(renderList.contains(e)){
+				removeFromRenderList(e);
 			}
-		}*/
+		}
 	}
 	
 	public void translate(int x, int y){
@@ -139,7 +118,7 @@ public class Map {
 		if(Util.RANDOM.nextDouble() <= fraction){
 			addSheepGroup(screen);
 		}
-		handleEntityMutations();
+		handleEntityMutations(true);
 		for(Projectile a: projectiles){
 			a.update();
 		}
@@ -239,6 +218,7 @@ public class Map {
 				else surface[x][y] = Tile.water1;
 			}
 		}
+		handleEntityMutations(true);
 	}
 	
 	public boolean containsEntity(Entity e){
@@ -246,9 +226,43 @@ public class Map {
 	}
 	
 	public void generateMap(GameScreen screen){
+		float[][] maskx = new float[getWidth()][getWidth()];
+		float[][] masky = new float[getWidth()][getWidth()];
+		for(float x = 0; x < maskx.length; x++){
+			for(float y = 0; y < maskx[(int)x].length; y++){
+				maskx[(int)x][(int)y] = 0;
+				masky[(int)x][(int)y] = 0;
+				if(ISLAND){
+					if(x < getWidth() / 10){
+						maskx[(int)x][(int)y] += (float)( - Math.cos((10 * Math.PI * x) / getWidth()) - 1);
+					}else if(x > getWidth() / 10 * 9){
+						maskx[(int)x][(int)y] += (float)(Math.cos((10 * x / getWidth() - 9) * Math.PI) - 1);
+					}
+					if(y < getWidth() / 10){
+						masky[(int)x][(int)y] += (float)( - Math.cos((10 * Math.PI * y) / getWidth()) - 1);
+					}else if(y > getWidth() / 10 * 9){
+						masky[(int)x][(int)y] += (float)(Math.cos((10 * y / getWidth() - 9) * Math.PI) - 1);
+					}
+				}
+			}
+		}
+		/*
+		for(int x = 0; x < maskx.length; x++){
+			for(int y = 0; y < maskx[x].length; y++){
+				System.out.print(maskx[x][y] + ", ");
+			}
+			System.out.println("+++");
+		}
+		System.out.println();
+		for(int x = 0; x < masky.length; x++){
+			for(int y = 0; y < masky[x].length; y++){
+				System.out.print(masky[x][y] + ", ");
+			}
+			System.out.println("+++");
+		}*/
 		for(int x = 0; x < getWidth(); x++){
 			for(int y = 0; y < getWidth(); y++){
-				float noise = noiseObj.perlinNoise(x, y, 0.3f, 32f, 4);
+				float noise = noiseObj.perlinNoise(x, y, 0.3f, 32f, 4) + maskx[x][y] + masky[x][y];
 				if(noise > 0) {
 					surface[x][y] = Tile.grass1;
 					if(noise > 0.6) {
@@ -267,7 +281,7 @@ public class Map {
 							addSheepGroup(x,y, screen);
 						}
 					}
-					handleEntityMutations();
+					handleEntityMutations(false);
 
 					if(Util.RANDOM.nextInt(10000) < SPAWN_CHANGE_GOLD_MINE){
 						int size = Util.RANDOM.nextInt(3) + 1;
@@ -277,7 +291,7 @@ public class Map {
 							addEntity(e);
 						}
 					}
-					handleEntityMutations();
+					handleEntityMutations(false);
 					if(Util.RANDOM.nextInt(10000) < SPAWN_CHANGE_IRON_MINE){
 						int size = Util.RANDOM.nextInt(3) + 1;
 						if(x > size && y > size){
@@ -291,6 +305,7 @@ public class Map {
 				else surface[x][y] = Tile.water1;
 			}
 		}
+		handleEntityMutations(true);
 	}
 	
 	public synchronized void render(SpriteBatch batch, Dimension screenSize, int screenWidth, int screenHeight){
@@ -299,14 +314,11 @@ public class Map {
 			for(int y = 0; y < getLength(); y++){
 				if(x + y + 2 > - ((translationY) / 8) && x + y - 1 < - ((translationY - screenHeight)/ 8) && x - y - 3 < ((translationX) / 16) && x - y + 1 > ((translationX - screenWidth) / 16)){
 					getTile(x, y).render(batch, screenSize, new Point(translationX, translationY), new Point(x, y));
-					batch.flush();
 				}
 			}
 		}
 		
-		Collections.sort(toSort, spriteSorter);
-		
-		for(Entity e: getEntities()){
+		for(Entity e: renderList){
 			e.render(batch);
 		}
 		for(Projectile a:projectiles){
@@ -356,14 +368,11 @@ public class Map {
 		return false;
 	}
 	
-	public void handleEntityMutations(){
+	public void handleEntityMutations(boolean recalculateRendering){
 		boolean flag = false;
-		if(!toBeRemoved.isEmpty() || !toBeRemovedFromMap.isEmpty() || !toBeAdded.isEmpty() || !projectilesToAdd.isEmpty() || !projectilesToRemove.isEmpty()){
+		if(!toBeRemoved.isEmpty() || !toBeRemovedFromMap.isEmpty() || !toBeAdded.isEmpty()){
 			flag = true;
 		}
-		toSort.addAll(toBeAdded);
-		toSort.removeAll(toBeRemoved);
-		toSort.removeAll(toBeRemovedFromMap);
 		entities.removeAll(toBeRemoved);
 		entities.removeAll(toBeRemovedFromMap);
 		notOnMap.addAll(toBeRemovedFromMap);
@@ -372,16 +381,57 @@ public class Map {
 		toBeRemoved.clear();
 		if(toBeAdded.size() > 0){
 			entities.addAll(toBeAdded);
-			Collections.sort(entities, entitySorter);
+			Collections.sort(entities, entitySorter); //lazy.
+			for(Entity e:toBeAdded){
+				if(entityInScreen(e)){
+					addToRenderList(e);
+				}
+			}
 		}
 		toBeAdded.clear();
 		projectiles.addAll(projectilesToAdd);
 		projectilesToAdd.clear();
 		projectiles.removeAll(projectilesToRemove);
 		projectilesToRemove.clear();
-		if(flag){
-			Collections.sort(entities, spriteSorter);
+		if(flag && recalculateRendering){
+			sortEntitiesForRendering();
 		}
+	}
+	
+	public void entityMoved(Entity e){
+		if(!renderList.contains(e))return;
+		removeFromRenderList(e);
+		addToRenderList(e);
+	}
+	
+	private void addToRenderList(Entity e){
+		if(renderList.contains(e))return;
+		if(renderList.size() < 1){
+			renderList.add(e);
+			return;
+		}
+		int screenY = e.xPos + e.yPos;
+		for(int i = 0; i < renderList.size(); i++){
+			if(renderList.get(i).xPos + renderList.get(i).yPos> screenY){
+				renderList.add(i, e);
+				return;
+			}
+		}
+		renderList.add(e);
+	}
+	
+	private void removeFromRenderList(Entity e){
+		if(renderList.contains(e)) renderList.remove(e);
+	}
+	
+	private boolean entityInScreen(Entity e){
+		if(screen == null) return true;
+		int x = e.getScreenX();
+		int y = e.getScreenY();
+		if(x > - 30  && y > - 30 && x < screen.getWidth() + 30 && y < screen.getHeight() + 30){
+			return true;
+		}
+		return false;
 	}
 	
 	public void addProjectile(Projectile projectile){

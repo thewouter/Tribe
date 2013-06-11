@@ -31,7 +31,7 @@ public class SPGameScreen extends GameScreen {
 	public SPGameScreen(RTSComponent component, InputHandler input){
 		super(component, input);
 		
-		setMap(new Map(256, this));
+		setMap(new Map(254, this));
 		
 		
 		levelUpButton = new Button(Images.buttons[2][1], statusBar) {
@@ -50,8 +50,7 @@ public class SPGameScreen extends GameScreen {
 				getMap().addEntity(p);
 				selectedEntities.add(p);
 				getMap().addEntity(new IronSmelter(getMap(), this, 10, y + 10, Direction.WEST));
-				getMap().handleEntityMutations();
-				getMap().sortEntitiesForRendering();
+				getMap().handleEntityMutations(true);
 				break;
 			}
 		}

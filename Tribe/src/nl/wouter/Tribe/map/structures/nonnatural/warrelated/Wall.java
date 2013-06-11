@@ -4,27 +4,35 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import nl.wouter.Tribe.Images;
 import nl.wouter.Tribe.map.Direction;
 import nl.wouter.Tribe.map.Map;
 import nl.wouter.Tribe.map.entities.Entity;
 import nl.wouter.Tribe.map.structures.BasicStructure;
 import nl.wouter.Tribe.map.structures.Structure;
+import nl.wouter.Tribe.map.tiles.Tile;
 import nl.wouter.Tribe.screen.GameScreen;
 
 public abstract class Wall extends BasicStructure {
 	protected boolean[] neightboursAreConnected = {false, false, false, false};
 	protected Sprite[] images = new Sprite[4];
+	private int textureX, textureY;
 
-	public Wall(Map map, GameScreen screen, int ID, int xPos, int yPos, Direction front) {
-		super(map, screen, xPos, yPos, 6, 0, ID, front);
+	public Wall(Map map, GameScreen screen, int ID, int xPos, int yPos, int textureX, int textureY, Direction front) {
+		super(map, screen, xPos, yPos, textureX, textureY, ID, front);
+		this.textureX =textureX;
+		this.textureY =textureY;
 		loadImages();
 		checkSides();
 	}
 	
-	public Wall(Map map, GameScreen screen, int ID, int xPos, int yPos, int health, Direction front) {
-		super(map, screen, xPos, yPos, 6, 0, ID, front);
+	public Wall(Map map, GameScreen screen, int ID, int xPos, int yPos, int textureX, int textureY, int health, Direction front) {
+		super(map, screen, xPos, yPos, textureX, textureY, ID, front);
 		this.health = health;
+		this.textureX =textureX;
+		this.textureY =textureY;
 		loadImages();
 		checkSides();
 	}
@@ -49,6 +57,27 @@ public abstract class Wall extends BasicStructure {
 		neightboursAreConnected[side] = connected;
 	}
 	
+	public void render(SpriteBatch batch){
+		for(int i = 0; i < images.length; i++){
+			if(neightboursAreConnected[i]){
+				images[i].setPosition(getScreenX() - (Tile.WIDTH / 2) * (getSize() - 1), getScreenY() - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
+				images[i].draw(batch);
+			}
+		}
+		
+		boolean flag = true;
+		for(boolean b:neightboursAreConnected){
+			if(b) flag = false;
+		}
+		
+		if(flag){
+			for(Sprite image:images){
+				image.setPosition(getScreenX() - (Tile.WIDTH / 2) * (getSize() - 1), getScreenY() - (getHeadSpace() * Tile.HEIGHT) + (Tile.HEIGHT / 2) * (getSize() - 1));
+				image.draw(batch);
+			}
+		}
+	}
+	
 	private boolean checkSide(int side, ArrayList<Entity> entities){
 		ArrayList<Entity> es;
 		int x = xPos;
@@ -68,10 +97,25 @@ public abstract class Wall extends BasicStructure {
 		return false;
 	}
 	
-	protected abstract void loadImages();
-	
 	public void update() {}
 
+	protected void loadImages() {
+		Images.structures.flip(false, true);
+		for (int i = 0, k = 0; i < 2; i++){
+			for(int j = 0; j < 2; j++, k++){
+				int x = (textureX + j)* Tile.WIDTH;
+				int y = (textureY + i * 2) * Tile.HEIGHT;
+				int width = getSize() * Tile.WIDTH;
+				int height = (getSize() + getHeadSpace()) * Tile.HEIGHT;
+				Images.structures.setRegion(x, y, width, height);
+				images[k] = new Sprite(Images.structures);
+				images[k].flip(false, true);
+			}
+				
+		}
+		Images.structures.setTexture(Images.structures.getTexture());
+		Images.structures.flip(false, true);
+	}
 	public String getExtraOne() {
 		return "0";
 	}
