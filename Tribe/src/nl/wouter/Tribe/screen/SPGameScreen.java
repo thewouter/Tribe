@@ -40,16 +40,15 @@ public class SPGameScreen extends GameScreen {
 			}
 		};
 		
-		for(int y = 10; y < getMap().getLength(); y++){
-			if(!getMap().getTile(10, y).isSolid()){
-				PlayerEntity p = new PlayerEntity(getMap(), this, 11, y, null);
+		for(int y = 10, x = 10; y < getMap().getLength() && x < getMap().getWidth(); y++, x++){
+			if(!getMap().getTile(x, y).isSolid()){
+				PlayerEntity p = new PlayerEntity(getMap(), this, x, y, null);
 				p.setProfession(new Founder(p));
-				PlayerEntity n = new PlayerEntity(getMap(), this, 10, y, null);
-				p.setProfession(new Founder(p));
+				PlayerEntity n = new PlayerEntity(getMap(), this, x+1, y, null);
 				getMap().addEntity(n);
 				getMap().addEntity(p);
 				selectedEntities.add(p);
-				getMap().addEntity(new IronSmelter(getMap(), this, 10, y + 10, Direction.WEST));
+				getMap().addEntity(new IronSmelter(getMap(), this, x + 10, y + 10, Direction.WEST));
 				getMap().handleEntityMutations(true);
 				break;
 			}

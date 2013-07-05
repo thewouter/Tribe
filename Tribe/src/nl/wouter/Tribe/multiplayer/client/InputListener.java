@@ -37,12 +37,9 @@ public class InputListener extends Thread{
 		try{
 			while(true){
 				String received = r.readLine();
-				if(r == null){
-					System.out.println("null");
+				if(r == null || received == null){
 					break;
 				}
-				//System.out.println(received);
-				//owner.messageReceived(received);
 				addMessage(received);
 			}
 		}catch(IOException e){

@@ -85,7 +85,7 @@ public class Tile {
 	}
 	
 	public int getID(){
-		return (int)id;
+		return (int) id;
 	}
 	
 	public static int getHeight(){

@@ -41,7 +41,7 @@ public class Map {
 	int c1 = 0, c2 = 0;
 	public int translationX, translationY;
 	
-	private static boolean ISLAND = true;
+	private static boolean ISLAND = false;
 	
 	public static final int TREE_GROW_CHANGE = 15, SHEEP_SPAWN_CHANGE_IN_FOREST =2, 
 			SHEEP_SPAWN_CHANGE_ON_PLAINS = 5, RADIUS_SHEEP_GROUPS = 5, SIZE_SHEEP_GROUPS = 10, 
@@ -226,43 +226,27 @@ public class Map {
 	}
 	
 	public void generateMap(GameScreen screen){
-		float[][] maskx = new float[getWidth()][getWidth()];
-		float[][] masky = new float[getWidth()][getWidth()];
-		for(float x = 0; x < maskx.length; x++){
-			for(float y = 0; y < maskx[(int)x].length; y++){
-				maskx[(int)x][(int)y] = 0;
-				masky[(int)x][(int)y] = 0;
+		float[][] mask = new float[getWidth()][getWidth()];
+		for(float x = 0; x < mask.length; x++){
+			for(float y = 0; y < mask[(int)x].length; y++){
+				mask[(int)x][(int)y] = 0;
 				if(ISLAND){
 					if(x < getWidth() / 10){
-						maskx[(int)x][(int)y] += (float)( - Math.cos((10 * Math.PI * x) / getWidth()) - 1);
+						mask[(int)x][(int)y] += (float)( - Math.cos((10 * Math.PI * x) / getWidth()) - 1);
 					}else if(x > getWidth() / 10 * 9){
-						maskx[(int)x][(int)y] += (float)(Math.cos((10 * x / getWidth() - 9) * Math.PI) - 1);
+						mask[(int)x][(int)y] += (float)(Math.cos((10 * x / getWidth() - 9) * Math.PI) - 1);
 					}
 					if(y < getWidth() / 10){
-						masky[(int)x][(int)y] += (float)( - Math.cos((10 * Math.PI * y) / getWidth()) - 1);
+						mask[(int)x][(int)y] += (float)( - Math.cos((10 * Math.PI * y) / getWidth()) - 1);
 					}else if(y > getWidth() / 10 * 9){
-						masky[(int)x][(int)y] += (float)(Math.cos((10 * y / getWidth() - 9) * Math.PI) - 1);
+						mask[(int)x][(int)y] += (float)(Math.cos((10 * y / getWidth() - 9) * Math.PI) - 1);
 					}
 				}
 			}
 		}
-		/*
-		for(int x = 0; x < maskx.length; x++){
-			for(int y = 0; y < maskx[x].length; y++){
-				System.out.print(maskx[x][y] + ", ");
-			}
-			System.out.println("+++");
-		}
-		System.out.println();
-		for(int x = 0; x < masky.length; x++){
-			for(int y = 0; y < masky[x].length; y++){
-				System.out.print(masky[x][y] + ", ");
-			}
-			System.out.println("+++");
-		}*/
 		for(int x = 0; x < getWidth(); x++){
 			for(int y = 0; y < getWidth(); y++){
-				float noise = noiseObj.perlinNoise(x, y, 0.3f, 32f, 4) + maskx[x][y] + masky[x][y];
+				float noise = noiseObj.perlinNoise(x, y, 0.3f, 32f, 4) + mask[x][y];
 				if(noise > 0) {
 					surface[x][y] = Tile.grass1;
 					if(noise > 0.6) {
@@ -752,21 +736,26 @@ public class Map {
 	}
 	
 	public synchronized String getData(){
-		System.out.println("getting data...");
+		System.out.println(Runtime.getRuntime().totalMemory());
+		System.out.println("getting data...");/*
 		String data = getLength() + " " + amountSheepGroups;
 	
 		for(int x = 0 ;x < getLength(); x++){
 			for(int y = 0; y < getWidth(); y++){
 				data = data + " " + surface[x][y].getID();
 			}
+			
 		}
+		System.out.println(Runtime.getRuntime().totalMemory());
 		String entityData = "";
 		for(Entity e: getEntities()){
 			entityData = entityData + " " + e.getData() + " ";
 		}
-		
+
+		System.out.println(Runtime.getRuntime().totalMemory());
 		data = data + " " + getEntities().size() + entityData;
-		
+
+		System.out.println(Runtime.getRuntime().totalMemory());
 		String movements = "";
 		int numberOfMovements = 0;
 		for(Entity e:entities){
@@ -775,9 +764,11 @@ public class Map {
 				movements = movements + " " + e.uniqueNumber + " " + ((MovingEntity)e).getEndPoint().x + " " + ((MovingEntity)e).getEndPoint().y;
 			}
 		}
+		System.out.println(Runtime.getRuntime().totalMemory());
 		data = data + " " + numberOfMovements + movements;
-		System.out.println("data collected");
-		return data;
+		System.out.println(Runtime.getRuntime().totalMemory());
+		System.out.println("data collected");*/
+		return /*data*/"0";
 	}
 
 	public void screenResized() {

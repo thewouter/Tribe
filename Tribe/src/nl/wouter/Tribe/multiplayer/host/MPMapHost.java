@@ -52,10 +52,6 @@ public class MPMapHost extends Map implements Cloneable{
 		handleEntityMutations(true);
 	}
 	
-	public void render(SpriteBatch batch){
-		render(batch, new Dimension(1000, 1000), 1000, 1000);
-	}
-	
 	public synchronized void addEntity(Entity e){
 		super.addEntity(e);
 		if(host != null) host.entityAdded(e, e.owner);

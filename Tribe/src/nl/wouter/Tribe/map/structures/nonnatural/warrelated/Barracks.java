@@ -12,6 +12,8 @@ import nl.wouter.Tribe.InputHandler;
 import nl.wouter.Tribe.map.Direction;
 import nl.wouter.Tribe.map.Map;
 import nl.wouter.Tribe.map.entities.Entity;
+import nl.wouter.Tribe.map.entities.MovingEntity;
+import nl.wouter.Tribe.map.entities.players.Bow;
 import nl.wouter.Tribe.map.entities.players.PlayerEntity;
 import nl.wouter.Tribe.map.entities.players.Soldier;
 import nl.wouter.Tribe.map.structures.BasicStructure;
@@ -25,6 +27,7 @@ public class Barracks extends BasicStructure {
 	public static int ID = 211, MAX_SOLDIER = 5;
 	public boolean isSelected = false;
 	public ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
+	private ArrayList<PlayerEntity> players = new ArrayList<>();
 	private BarracksPopup popup;
 	private int time = 0;
 	
@@ -68,20 +71,32 @@ public class Barracks extends BasicStructure {
 	public void update() {
 		if(screen instanceof MPGameScreen) return;
 		LinkedList<Soldier> toRemove = new LinkedList<Soldier>();
+		for(int x = -1; x <=1; x++){
+			for(int y = -1; y <= 1; y++){
+				Entity e = map.getEntity(x + xPos, y + yPos);
+				if(e != null && e instanceof PlayerEntity&& ((MovingEntity)e).entityGoal == this && players.size() + soldiers.size() < MAX_SOLDIER){
+					players.add((PlayerEntity) e);
+				}
+			}
+		}
 		for(Soldier s: soldiers){
 			if(!map.containsEntity(s)){
 				toRemove.add(s);
 			}
 		}
+		
 		soldiers.removeAll(toRemove);
 		
-		if(soldiers.size() < MAX_SOLDIER && popup.soldierNeeded()){
+		if(popup.soldierNeeded()){
 			time ++;
 			if(time > 180){
 				time = 0;
 				Soldier s = popup.getSoldier();
 				map.addEntity(s);
 				soldiers.add(s);
+				PlayerEntity p = players.get(0);
+				map.removeEntity(p);
+				players.remove(p);
 			}
 		}
 		popup.updateBarracks();

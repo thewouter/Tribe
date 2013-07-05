@@ -11,9 +11,7 @@ import nl.wouter.Tribe.map.entities.Entity;
 import nl.wouter.Tribe.rest.Inventory;
 import nl.wouter.Tribe.screen.GameScreen;
 
-public class Player extends GameScreen {
-	
-	public Inventory inventory;
+public class Player {
 	public InputListener input;
 	public MPHost host;
 	public final int ID;
@@ -27,21 +25,17 @@ public class Player extends GameScreen {
 	}
 	
 	public Player(RTSComponent component, InputHandler input, MPHost host, BufferedReader r, PrintStream p, List<Entity> entities) {
-		super(component, input);
 		ID = getNextPlayerID();
 		
 		this.input = new InputListener(this, r, p);
 		try {
 			setLoginName(this.input.r.readLine().split(" ",2)[1]);
 		} catch (IOException e) {e.printStackTrace();}
-		inventory = host.inventory;
 		
 		this.host = host;
 		
-		this.input.send(host.map.getData());
-		
-		inventory = new Inventory(this);
-		
+		this.input.send(host.getMap().getData());
+				
 		this.input.read(); 		// wait for confirmation from the client that the map has been decoded.
 		
 		this.input.start();

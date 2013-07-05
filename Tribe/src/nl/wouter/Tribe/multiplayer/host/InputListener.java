@@ -41,7 +41,7 @@ public class InputListener extends Thread{
 				if(!running){
 					break;
 				}
-				if(r == null){
+				if(r == null || received == null){
 					p.quit();
 					break;
 				}

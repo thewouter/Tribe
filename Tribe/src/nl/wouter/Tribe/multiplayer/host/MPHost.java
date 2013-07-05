@@ -24,14 +24,15 @@ import nl.wouter.Tribe.map.structures.BasicStructure;
 import nl.wouter.Tribe.map.structures.nonnatural.warrelated.Barracks;
 import nl.wouter.Tribe.rest.Inventory;
 import nl.wouter.Tribe.rest.Util;
+import nl.wouter.Tribe.screen.GameScreen;
 import nl.wouter.Tribe.screen.Screen;
 
 
-public class MPHost extends Screen{
+public class MPHost extends GameScreen{
 	
 	public int port;
 	
-	public MPMapHost map;
+	//public MPMapHost map;
 	
 	public Inventory inventory =new Inventory(this);
 	
@@ -47,7 +48,7 @@ public class MPHost extends Screen{
 		super(component , input);
 		this.port = port;
 		
-		map =  new MPMapHost(256, this);
+		setMap(new MPMapHost(256, this));
 		
 		clientHandler = new ClientHandler(this);
 		clientHandler.start();
@@ -68,7 +69,7 @@ public class MPHost extends Screen{
 			}
 		}
 		
-		map.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		getMap().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		super.update();
 		
@@ -76,10 +77,10 @@ public class MPHost extends Screen{
 		players.addAll(toAdd);
 		toRemove.clear();
 		for(Player p: toAdd){
-			PlayerEntity player = new PlayerEntity(map, p, 11, 11, null);
+			PlayerEntity player = new PlayerEntity(getMap(), this, 11, 11, null);
 			player.owner = p;
 			player.setProfession(new Founder(player));
-			map.addEntity(player);
+			getMap().addEntity(player);
 		}
 		toAdd.clear();
 	}
@@ -112,7 +113,7 @@ public class MPHost extends Screen{
 	}
 	
 	public void render(SpriteBatch batch, OrthographicCamera camera) {
-		map.render(batch, new Dimension(getWidth(), getHeight()), getWidth(), getHeight());
+		//map.render(batch, new Dimension(getWidth(), getHeight()), getWidth(), getHeight());
 	}
 	
 	public void messageReceived(String message, Player owner) {
@@ -154,7 +155,7 @@ public class MPHost extends Screen{
 		int uniqueNumberBarrack = Util.parseInt(Util.splitString(message).get(2));
 		int select = Util.parseInt(Util.splitString(message).get(1));
 		int buttonID = Util.parseInt(Util.splitString(message).get(3));
-		Entity e = map.getEntity(uniqueNumberBarrack);
+		Entity e = getMap().getEntity(uniqueNumberBarrack);
 		if(e instanceof Barracks){
 			if(select == 1){
 				((Barracks)e).getpopup().getButton(buttonID).onSelect();
@@ -177,16 +178,16 @@ public class MPHost extends Screen{
 		boolean fromTop = Util.parseInt(Util.splitString(message).get(2)) == 1 ? true : false ;
 		int horSpeed = Util.parseInt(Util.splitString(message).get(4));
 		int maxDistance = Util.parseInt(Util.splitString(message).get(5));
-		Entity start = map.getEntity(uniqueNumberStart);
-		Entity end = map.getEntity(uniqueNumberEnd);
-		map.shootArrow(start, end, fromTop, horSpeed, maxDistance);
+		Entity start = getMap().getEntity(uniqueNumberStart);
+		Entity end = getMap().getEntity(uniqueNumberEnd);
+		getMap().shootArrow(start, end, fromTop, horSpeed, maxDistance);
 		
 	}
 	
 	private void professionMethod(String message){
 		int uniqueNumber = Util.parseInt(Util.splitString(message).get(1));
 		int method = Util.parseInt(Util.splitString(message).get(2));
-		Entity e = map.getEntity(uniqueNumber);
+		Entity e = getMap().getEntity(uniqueNumber);
 		if(e instanceof PlayerEntity){
 			PlayerEntity player = (PlayerEntity)e;
 			Profession profession = player.getProfession();
@@ -255,16 +256,16 @@ public class MPHost extends Screen{
 		}
 		int isOwnedByPlayer = Util.parseInt(Util.splitString(message).get(n++));
 		int front = Util.parseInt(Util.splitString(message).get(n));
-		Entity e = Util.getEntity(map, owner, ID, xPos, yPos, health, extraInfoOne, front);
+		Entity e = Util.getEntity(getMap(), this, ID, xPos, yPos, health, extraInfoOne, front);
 		if(isOwnedByPlayer == 1) e.owner = owner;
-		e.screen = owner;
+		e.screen = this;
 		e.setHealth(health);
-		map.addEntity(e);
+		getMap().addEntity(e);
 		
 	}
 	
 	private void damageEntity(String message){
-		map.getEntity(Util.parseInt(Util.splitString(message).get(1))).damage(Util.parseInt(Util.splitString(message).get(2)));
+		getMap().getEntity(Util.parseInt(Util.splitString(message).get(1))).damage(Util.parseInt(Util.splitString(message).get(2)));
 	}
 	
 	public void entityAdded(Entity e, Player owner){
@@ -297,7 +298,7 @@ public class MPHost extends Screen{
 	}
 	
 	private void moveEntity(String message){
-		Entity e = map.getEntity(Util.parseInt(Util.splitString(message).get(2)));
+		Entity e = getMap().getEntity(Util.parseInt(Util.splitString(message).get(2)));
 		int oneOrTwo = Util.parseInt(Util.splitString(message).get(1));
 		if(oneOrTwo == 1){
 			if(e instanceof MovingEntity){
@@ -305,17 +306,17 @@ public class MPHost extends Screen{
 			}
 		}else if(oneOrTwo == 2){
 			if(e instanceof MovingEntity){
-				((MovingEntity)e).moveTo(map.getEntity(Util.parseInt(Util.splitString(message).get(3))));
+				((MovingEntity)e).moveTo(getMap().getEntity(Util.parseInt(Util.splitString(message).get(3))));
 			}
 		}else if(oneOrTwo == 3){ // haha
 			if(e instanceof MovingEntity){
-				((MovingEntity)e).follow(map.getEntity(Util.parseInt(Util.splitString(message).get(3))), Util.parseInt(Util.splitString(message).get(4)));
+				((MovingEntity)e).follow(getMap().getEntity(Util.parseInt(Util.splitString(message).get(3))), Util.parseInt(Util.splitString(message).get(4)));
 			}
 		}
 	}
 	
 	private void removeEntity(String message){
-		map.removeEntity(map.getEntity(Util.parseInt(Util.splitString(message).get(1))));
+		getMap().removeEntity(getMap().getEntity(Util.parseInt(Util.splitString(message).get(1))));
 	}
 
 	public void addProfession(PlayerEntity p, Profession prof) {
@@ -328,7 +329,7 @@ public class MPHost extends Screen{
 	private void professionSet(String message){
 		int uniqueNumber = Util.parseInt(Util.splitString(message).get(1));
 		int ProfessionID = Util.parseInt(Util.splitString(message).get(2));
-		Profession.setProfession(ProfessionID, (PlayerEntity)map.getEntity(uniqueNumber));
+		Profession.setProfession(ProfessionID, (PlayerEntity)getMap().getEntity(uniqueNumber));
 	}
 	
 	public void quit(){
@@ -336,6 +337,18 @@ public class MPHost extends Screen{
 			p.quit();
 		}
 		clientHandler.quit();
+	}
+
+	public void save() {
+	}
+
+	public void save(String fileName) {
+	}
+
+	public void load() {
+	}
+
+	public void load(String nameFile) {
 	}
 }
 

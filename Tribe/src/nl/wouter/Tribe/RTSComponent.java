@@ -55,8 +55,8 @@ public class RTSComponent extends Game {
 		input = InputHandler.getInputHandler();
 		Gdx.input.setInputProcessor(input);
 		loadBackgroundMusic();
-		setGameScreen(true);
-		//setTitleScreen();
+		//msetGameScreen(true);
+		setTitleScreen();
 		setModes(Gdx.graphics.getDisplayModes());
 		fullScreenManager = new FullScreenManager(this);
 	}

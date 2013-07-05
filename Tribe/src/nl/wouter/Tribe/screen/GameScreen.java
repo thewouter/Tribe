@@ -269,7 +269,8 @@ public abstract class GameScreen extends Screen {
 	
 	public void resize(int width, int height){
 		super.resize(width, height);
-		map.screenResized();
-		map.sortEntitiesForRendering();
+		if(getMap() == null) return;
+		getMap().screenResized();
+		getMap().sortEntitiesForRendering();
 	}
 }
